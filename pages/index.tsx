@@ -3,6 +3,7 @@ import Menu from "../components/menu";
 import { useRef, useState } from "react";
 import { BsX } from "react-icons/bs";
 import { RiMenuFill, RiSearch2Line } from "react-icons/ri";
+import { Intro } from "../components/home-page/intro";
 const routes = [
     {
         title: "Home",
@@ -29,7 +30,7 @@ const Home: NextPage = () => {
     return (
         <div className="w-full h-full relative">
             <div
-                className={`md:hidden fixed w-full shadow-lg -top-1 bg-white dark:bg-slate-800
+                className={`md:hidden w-full shadow-lg -top-1 bg-white dark:bg-slate-900
                 a flex items-center justify-between py-4 px-6 text-primary-main dark:text-primaryDark-main`}
             >
                 <label className="">
@@ -61,6 +62,9 @@ const Home: NextPage = () => {
             </div>
             <div className="hidden md:block">
                 <Menu routes={routes} close={() => setOpenMenu(false)} />
+            </div>
+            <div className="flex justify-center">
+                <Intro />
             </div>
         </div>
     );
