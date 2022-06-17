@@ -1,28 +1,32 @@
 import type { NextPage } from "next";
-import Menu from "../components/menu";
+import Menu from "../components/home-page/menu";
 import { useRef, useState } from "react";
 import { BsX } from "react-icons/bs";
 import { RiMenuFill, RiSearch2Line } from "react-icons/ri";
 import { Intro } from "../components/home-page/intro";
-const routes = [
-    {
-        title: "Home",
-        link: "#home",
-    },
-    {
-        title: "Shop",
-        link: "#shop",
-    },
-    {
-        title: "Sign up",
-        link: "#signup",
-    },
-];
+import * as ROUTES from "../utilities/routes";
+export interface IRoute {
+    title: string;
+    link: string;
+}
 
 const Home: NextPage = () => {
     const [openMenu, setOpenMenu] = useState<Boolean>(false);
     const menuContainer = useRef(null);
-
+    const routes: IRoute[] = [
+        {
+            title: "Home",
+            link: `/${ROUTES.HOME}`,
+        },
+        {
+            title: "About us",
+            link: `/#${ROUTES.ABOUT}`,
+        },
+        {
+            title: "Sign Up/Log in",
+            link: `/#${ROUTES.REGISTER}`,
+        },
+    ];
     const toggleMenu = (menuElement: HTMLDivElement) => {
         menuElement.classList.toggle("w-3/4");
     };
@@ -63,7 +67,7 @@ const Home: NextPage = () => {
             <div className="hidden md:block">
                 <Menu routes={routes} close={() => setOpenMenu(false)} />
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-3">
                 <Intro />
             </div>
         </div>
