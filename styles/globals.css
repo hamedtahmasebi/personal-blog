@@ -11,16 +11,9 @@ body {
     font-weight: 500;
 }
 
-@media (prefers-color-scheme: light) {
-    body {
-        background-color: white;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        @apply bg-slate-800 text-white;
-    }
+body.dark {
+    color: #ddd;
+    @apply bg-slate-800;
 }
 
 h1 {
@@ -46,7 +39,7 @@ h5 {
 p,
 span,
 a {
-    @apply text-lg;
+    @apply text-base;
 }
 
 a {
