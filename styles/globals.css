@@ -46,7 +46,7 @@ h5 {
 p,
 span,
 a {
-    @apply text-lg;
+    @apply text-base;
 }
 
 a {
