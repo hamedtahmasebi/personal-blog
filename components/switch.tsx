@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { ReactNode } from "react";
 import { useState } from "react";
 interface ISwitchProps {
@@ -11,7 +11,7 @@ interface ISwitchProps {
 const Switch: React.FC<ISwitchProps> = ({ onSwitchOff, onSwitchOn, children, initialValue }) => {
     const [toggle, setToggle] = useState<boolean>(false);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         setToggle(initialValue);
     }, [initialValue]);
 
