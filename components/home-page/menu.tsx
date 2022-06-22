@@ -2,6 +2,9 @@ import Link from "next/link";
 import React from "react";
 import { IRoute } from "./side-bar";
 import { useRouter } from "next/router";
+import Switch from "../switch";
+import { BiSun } from "react-icons/bi";
+import { switchDarkMode } from "../../utilities/actions";
 interface Props {
     routes: IRoute[];
     close: () => void;
@@ -16,8 +19,26 @@ export const Menu: React.FC<Props> = ({ routes, close }) => {
                  md:flex-row px-5 py-6 md:px-24 md:h-auto absolute md:relative w-3/4 md:w-full
                  text-primary-400 font-bold text-primary-main  dark:text-primaryDark-main`}
             >
-                <div className="text-3xl md:text-5xl ">Logo</div>
-                <ul className="flex flex-col md:flex-row justify-center md:items-end mt-8 md:mt-0 md:ml-8">
+                <div className="flex items-center justify-between">
+                    <div className="text-3xl md:text-5xl ">Logo</div>
+                    <div>
+                        <Switch
+                            onSwitchOff={() => {
+                                switchDarkMode("off");
+                            }}
+                            onSwitchOn={() => {
+                                switchDarkMode("on");
+                            }}
+                        >
+                            <span className="dark:hidden">
+                                <BiSun color="white" />
+                            </span>
+                            <span></span>
+                        </Switch>
+                    </div>
+                </div>
+
+                <ul className="flex flex-col md:flex-row justify-center md:items-end mt-4 md:mt-0 md:ml-8">
                     {routes.map((route, index) => (
                         <li
                             key={`route-${index}`}
