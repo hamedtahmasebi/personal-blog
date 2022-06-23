@@ -6,7 +6,6 @@ import { switchDarkMode } from "../utilities/actions";
 function MyApp({ Component, pageProps }: AppProps) {
     function darkModeInitializer() {
         let darkModeStatus = localStorage.getItem("darkMode");
-        console.log(darkModeStatus);
         if (!darkModeStatus || darkModeStatus === "false") return switchDarkMode("off");
         if (darkModeStatus && darkModeStatus === "true") return switchDarkMode("on");
     }

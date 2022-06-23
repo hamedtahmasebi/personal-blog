@@ -18,7 +18,6 @@ export const Menu: React.FC<Props> = ({ routes, close }) => {
 
     useEffect(() => {
         const darkModeStatus = localStorage.getItem("darkMode");
-        console.log(darkModeStatus);
         if (darkModeStatus === "true") {
             setDarkModeSwitchValue(true);
         } else {
