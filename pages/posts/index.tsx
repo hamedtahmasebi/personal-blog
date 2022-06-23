@@ -6,6 +6,7 @@ export async function getStaticProps() {
     return {
         props: {
             blogPosts: res.items,
+            n: res,
         },
     };
 }
@@ -25,7 +26,7 @@ const Posts = ({ blogPosts }: { blogPosts: any }) => {
                                     140
                                 )}
                                 date={post.sys.updatedAt}
-                                url={"https://example.com"}
+                                url={`posts/${post.sys.id}`}
                             />
                         </div>
                     </div>
