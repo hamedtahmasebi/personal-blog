@@ -1,15 +1,15 @@
+import { GetStaticProps } from "next";
 import React from "react";
 import { PostPreviewCard } from "../../components/posts-page/post-preview-card";
 import client from "../../lib/contentful";
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
     const res = await client.getEntries({ content_type: "blogPost" });
     return {
         props: {
             blogPosts: res.items,
-            n: res,
         },
     };
-}
+};
 
 const Posts = ({ blogPosts }: { blogPosts: any }) => {
     return (
