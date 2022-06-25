@@ -34,24 +34,24 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const Posts = ({ blogPosts }: { blogPosts: BlogPost[] }) => {
     return (
-        <div className="mt-6 px-4 md:px-24">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8">
-                {blogPosts.map((post, index) => (
-                    <div className="px-2 py-4" key={`post-preview-${index}`}>
-                        <div className="flex flex-col justify-between shadow-md dark:shadow-2xl h-full px-6 py-4 rounded-md">
-                            <PostPreviewCard
-                                key={`post-preview-${index}`}
-                                title={post.title ? post.title : "UNTITLED"}
-                                summary={post.articleContent?.json.content[0].content[0].value.slice(
-                                    0,
-                                    140
-                                )}
-                                date={post.sys.publishedAt}
-                                url={`/posts/${post.sys.id}`}
-                            />
-                        </div>
-                    </div>
-                ))}
+        <div className="flex justify-center mt-6">
+            <div className="w-full md:w-4/5">
+                {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8"> */}
+                <div className="flex flex-wrap mt-8">
+                    {blogPosts.map((post, index) => (
+                        <PostPreviewCard
+                            key={`post-preview-${index}`}
+                            title={post.title ? post.title : "UNTITLED"}
+                            summary={post.articleContent?.json.content[0].content[0].value.slice(
+                                0,
+                                140
+                            )}
+                            imgUrl={post.picture?.url || undefined}
+                            date={post.sys.publishedAt}
+                            url={`/posts/${post.sys.id}`}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
