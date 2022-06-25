@@ -1,10 +1,26 @@
+import axios from "axios";
 import { GetStaticPaths, GetStaticPathsContext, GetStaticProps, GetStaticPropsContext } from "next";
 import React from "react";
-import client from "../../lib/contentful";
+import apolloClient from "../../lib/apollo-client";
+import { gql } from "@apollo/client";
+import { BlogPost } from "../../generated/graphql";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const res = await client.getEntries({ content_type: "blogPost" });
-    const ids = res.items.map((item) => item.sys.id);
+    // const res = await client.getEntries({ content_type: "blogPost" });
+    const { data } = await apolloClient.query({
+        query: gql`
+            query blogPostCollection {
+                blogPostCollection {
+                    items {
+                        sys {
+                            id
+                        }
+                    }
+                }
+            }
+        `,
+    });
+    const ids = data.blogPostCollection.items.map((item: BlogPost) => item.sys.id);
     const paths = ids.map((id: string) => {
         return { params: { id } };
     });
@@ -16,16 +32,30 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context: GetStaticPropsContext) => {
     const { params } = context;
-    const blogPost = await client.getEntry(params!.id as string);
+    const { data } = await apolloClient.query({
+        query: gql`
+            query blogPost($id: String!) {
+                blogPost(id: $id) {
+                    title
+                    articleContent {
+                        json
+                    }
+                }
+            }
+        `,
+        variables: {
+            id: params!.id,
+        },
+    });
     return {
         props: {
-            blogPostData: blogPost,
+            blogPostData: data.blogPost,
         },
     };
 };
 
 export const Post = ({ blogPostData }: { blogPostData: any }) => {
-    return <div>{blogPostData.fields.title}</div>;
+    return <div>{blogPostData.title}</div>;
 };
 
 export default Post;
