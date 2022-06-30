@@ -17,34 +17,44 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
     url,
     imgUrl,
 }) => {
+    const dateFormatter = Intl.DateTimeFormat("en", { month: "short", day: "numeric" });
+    const dateString = `${dateFormatter.format(new Date(date))}`;
     return (
-        <div className="flex flex-col w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4 py-2">
-            <div className="flex flex-col justify-between h-full shadow-md dark:shadow-2xl rounded-md">
-                <div className="">
-                    <Image
-                        src={imgUrl ? imgUrl : placeholderImage}
-                        alt="post-preview-image"
-                        className="object-cover rounded-t-md"
-                        width={"100"}
-                        height={"60"}
-                        layout="responsive"
-                    />
-                    <div className="px-6 mt-3">
-                        <h3 className="text-primary-main dark:text-primaryDark-main">{title}</h3>
-                        <p className="mt-3">{summary}...</p>
+        <div className="flex shadow-md dark:bg-slate-900 rounded">
+            <div className="grid grid-cols-6 w-full">
+                <div className="px-6 mt-3 col-span-4">
+                    <div className="flex py-1">
+                        <a
+                            href="#/"
+                            className="text-gray-600 dark:text-gray-200 text-sm hover:underline leading-1"
+                        >
+                            Username
+                        </a>
+                    </div>
+                    <div className="pb-4">
+                        <Link href={url}>
+                            <a className="">
+                                <h4
+                                    className="font-extrabold leading-8 transition-all duration-100 
+                                text-primary-main hover:text-primary-200 
+                                dark:text-primaryDark-main dark:hover:text-primaryDark-200"
+                                >
+                                    {title}
+                                </h4>
+                                <p
+                                    className="mt-1 text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50
+                                hover:underline"
+                                >
+                                    {summary}...
+                                </p>
+                            </a>
+                        </Link>
+
+                        <div className="text-gray-400 text-sm mt-2">{dateString}</div>
                     </div>
                 </div>
-                <div className="px-6 py-4 flex flex-col">
-                    <div className="flex mt-3 justify-end w-full md:w-auto">
-                        <button
-                            className="bg-primary-main 
-                        dark:bg-primaryDark-main text-white px-6 
-                        py-2 rounded h-auto w-full md:w-auto
-                        "
-                        >
-                            <Link href={url}>Read more</Link>
-                        </button>
-                    </div>
+                <div className=" relative p-1 col-span-2 ">
+                    {imgUrl && <Image src={imgUrl} alt="post" layout="fill" objectFit="cover" />}
                 </div>
             </div>
         </div>
