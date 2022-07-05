@@ -28,18 +28,18 @@ export const Menu: React.FC<Props> = ({ routes, close }) => {
     return (
         <div className="flex">
             <div
-                className={`bg-white shadow-lg rounded-r-2xl md:rounded-none dark:bg-slate-800 h-screen flex flex-col
-                 md:flex-row px-5 py-6 md:px-24 md:h-auto absolute md:relative w-3/4 md:w-full
-                 text-primary-400 font-bold text-primary-main  dark:text-primaryDark-main`}
+                className={`bg-white shadow-lg dark:bg-slate-800 h-screen flex flex-col
+                 md:flex-row px-5 py-6 md:px-24 md:h-auto w-3/4 md:w-full absolute md:relative 
+                 text-primary-400 text-primary-main  dark:text-primaryDark-main font-bold`}
             >
-                <div className="text-3xl md:text-5xl ">Logo</div>
+                <h1 className="text-5xl font-bold my-auto">Nextjs blog</h1>
 
-                <ul className="flex flex-col md:flex-row md:justify-center md:items-center mt-4 md:mt-0 md:ml-8 h-full">
+                <ul className="flex flex-col md:flex-row md:justify-center md:items-center mt-4 md:mt-0 md:ml-8 h-full list-none">
                     {routes.map((route, index) => (
                         <li
                             key={`route-${index}`}
                             className={`
-                            transition-all duration-150 rounded-2xl  my-2 md:mx-6
+                            transition-all duration-150 rounded-sm  my-2 md:mx-6
                             hover:bg-primary-300 hover:text-white
                           ${
                               url.asPath === route.link &&
