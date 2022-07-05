@@ -2,36 +2,54 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import placeholderImage from "../../public/placeholder-image.png";
+import profileAvatarPlaceholder from "../../public/profile-avatar-placeholder.png";
+import { BsBookmarkPlus } from "react-icons/bs";
+import { BiMinusCircle } from "react-icons/bi";
+import { ContentfulMetadata, ContentfulTag } from "../../generated/graphql";
+import { Maybe } from "graphql/jsutils/Maybe";
 interface IPostPreviewCard {
     title: string;
-    summary: string;
     url: string;
+    summary: string;
     imgUrl?: string;
     date: Date;
+    tags?: ContentfulMetadata["tags"];
 }
 
 export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
     title,
-    summary,
     date,
     url,
     imgUrl,
+    summary,
+    tags,
 }) => {
     const dateFormatter = Intl.DateTimeFormat("en", { month: "short", day: "numeric" });
     const dateString = `${dateFormatter.format(new Date(date))}`;
     return (
-        <div className="flex shadow-md dark:bg-slate-900 rounded">
+        <div className="flex my-1 rounded">
             <div className="grid grid-cols-6 w-full">
-                <div className="px-6 mt-3 col-span-4">
-                    <div className="flex py-1">
-                        <a
-                            href="#/"
-                            className="text-gray-600 dark:text-gray-200 text-sm hover:underline leading-1"
-                        >
+                <div className="col-span-4">
+                    <div className="flex items-center text-gray-500 dark:text-gray-200">
+                        <div className="relative w-6 h-6 rounded-full">
+                            <span className="absolute w-full h-full top-0 rounded-full overflow-hidden">
+                                <Image
+                                    src={profileAvatarPlaceholder}
+                                    width={20}
+                                    height={20}
+                                    layout="fill"
+                                    alt="profile"
+                                />
+                            </span>
+                        </div>
+
+                        <a href="#/" className="ml-2 text-sm hover:underline leading-1">
                             Username
                         </a>
+                        <span className="mx-1">•</span>
+                        <span className="text-sm">{dateString}</span>
                     </div>
-                    <div className="pb-4">
+                    <div className="mt-2">
                         <Link href={url}>
                             <a className="">
                                 <h4
@@ -41,20 +59,58 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                                 >
                                     {title}
                                 </h4>
-                                <p
-                                    className="mt-1 text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50
-                                hover:underline"
-                                >
-                                    {summary}...
-                                </p>
                             </a>
                         </Link>
 
-                        <div className="text-gray-400 text-sm mt-2">{dateString}</div>
+                        <Link href={url}>
+                            <p className="hidden md:block hover:underline hover:cursor-pointer">
+                                {summary}
+                            </p>
+                        </Link>
+
+                        {tags && (
+                            <p className="mt-3">
+                                {tags.map(
+                                    (tag: Maybe<ContentfulTag>) =>
+                                        tag &&
+                                        tag.name && (
+                                            <button
+                                                key={tag.name.slice(4)}
+                                                className="text-sm bg-gray-200 text-gray-500 rounded-full px-2
+                                                transition-all hover:bg-gray-300 hover:text-gray-600
+                                                dark:bg-gray-500 dark:text-gray-200
+                                                dark:hover:bg-gray-600 dark:hover:text-gray-300
+                                                "
+                                            >
+                                                {tag.name}
+                                            </button>
+                                        )
+                                )}
+                            </p>
+                        )}
+
+                        <div className="flex justify-between items-center text-gray-500 dark:text-gray-200 mt-2">
+                            <div className="flex">
+                                <span className="text-sm">3 min read</span>
+                            </div>
+                            <div className="flex gap-1 mr-4">
+                                <button className="ml-2 hover:text-black transition-all">
+                                    <BsBookmarkPlus size={22} />
+                                </button>
+                                <button className="ml-2 hover:text-red-900 transition-all">
+                                    <BiMinusCircle size={22} />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className=" relative p-1 col-span-2 ">
-                    {imgUrl && <Image src={imgUrl} alt="post" layout="fill" objectFit="cover" />}
+                    <Image
+                        src={imgUrl ? imgUrl : placeholderImage}
+                        alt="post"
+                        layout="fill"
+                        objectFit="cover"
+                    />
                 </div>
             </div>
         </div>
