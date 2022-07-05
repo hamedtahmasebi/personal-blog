@@ -608,10 +608,10 @@ export type BlogPostQueryVariables = Exact<{
 
 export type BlogPostQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPost', title?: string | null, articleContent?: { __typename?: 'BlogPostArticleContent', json: any } | null } | null };
 
-export type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
+export type BlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type Unnamed_1_Query = { __typename?: 'Query', blogPostCollection?: { __typename?: 'BlogPostCollection', items: Array<{ __typename?: 'BlogPost', title?: string | null, sys: { __typename?: 'Sys', id: string }, articleContent?: { __typename?: 'BlogPostArticleContent', json: any } | null, picture?: { __typename?: 'Asset', url?: string | null } | null } | null> } | null };
+export type BlogPostsQuery = { __typename?: 'Query', blogPostCollection?: { __typename?: 'BlogPostCollection', items: Array<{ __typename?: 'BlogPost', title?: string | null, sys: { __typename?: 'Sys', id: string, publishedAt?: any | null }, articleContent?: { __typename?: 'BlogPostArticleContent', json: any } | null, picture?: { __typename?: 'Asset', url?: string | null } | null, contentfulMetadata: { __typename?: 'ContentfulMetadata', tags: Array<{ __typename?: 'ContentfulTag', name?: string | null } | null> } } | null> } | null };
 
 
 export const BlogPostCollectionDocument = gql`
@@ -690,12 +690,13 @@ export function useBlogPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<B
 export type BlogPostQueryHookResult = ReturnType<typeof useBlogPostQuery>;
 export type BlogPostLazyQueryHookResult = ReturnType<typeof useBlogPostLazyQuery>;
 export type BlogPostQueryResult = Apollo.QueryResult<BlogPostQuery, BlogPostQueryVariables>;
-export const Document = gql`
-    {
+export const BlogPostsDocument = gql`
+    query blogPosts {
   blogPostCollection {
     items {
       sys {
         id
+        publishedAt
       }
       title
       articleContent {
@@ -704,34 +705,39 @@ export const Document = gql`
       picture {
         url
       }
+      contentfulMetadata {
+        tags {
+          name
+        }
+      }
     }
   }
 }
     `;
 
 /**
- * __useQuery__
+ * __useBlogPostsQuery__
  *
- * To run a query within a React component, call `useQuery` and pass it any options that fit your needs.
- * When your component renders, `useQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useBlogPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBlogPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useQuery({
+ * const { data, loading, error } = useBlogPostsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useQuery(baseOptions?: Apollo.QueryHookOptions<Query, QueryVariables>) {
+export function useBlogPostsQuery(baseOptions?: Apollo.QueryHookOptions<BlogPostsQuery, BlogPostsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Query, QueryVariables>(Document, options);
+        return Apollo.useQuery<BlogPostsQuery, BlogPostsQueryVariables>(BlogPostsDocument, options);
       }
-export function useLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Query, QueryVariables>) {
+export function useBlogPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostsQuery, BlogPostsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Query, QueryVariables>(Document, options);
+          return Apollo.useLazyQuery<BlogPostsQuery, BlogPostsQueryVariables>(BlogPostsDocument, options);
         }
-export type QueryHookResult = ReturnType<typeof useQuery>;
-export type LazyQueryHookResult = ReturnType<typeof useLazyQuery>;
-export type QueryResult = Apollo.QueryResult<Query, QueryVariables>;
+export type BlogPostsQueryHookResult = ReturnType<typeof useBlogPostsQuery>;
+export type BlogPostsLazyQueryHookResult = ReturnType<typeof useBlogPostsLazyQuery>;
+export type BlogPostsQueryResult = Apollo.QueryResult<BlogPostsQuery, BlogPostsQueryVariables>;
