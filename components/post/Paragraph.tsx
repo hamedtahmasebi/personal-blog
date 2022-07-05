@@ -2,7 +2,6 @@ import React from "react";
 import type { TContent } from "../../pages/posts/[id]";
 
 export const Paragraph = ({ contentfulNode }: { contentfulNode: TContent }) => {
-    console.log(contentfulNode);
     let isCode = false;
     contentfulNode.content?.forEach((node) => {
         node.marks?.forEach((mark) => {

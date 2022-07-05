@@ -6,8 +6,8 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-size: 1.4rem;
-    font-weight: 300;
+    font-size: 1.2rem;
+    font-weight: 400;
 }
 
 html {
@@ -62,14 +62,32 @@ h5 > * {
 
 ol {
     list-style: decimal;
-    margin-left: 1rem;
+    margin-left: 1.35rem;
 }
 ul {
     list-style: disc;
-    margin-left: 1rem;
+    margin-left: 1.35rem;
 }
 
 li {
     @apply my-1.5;
     display: list-item;
+}
+
+table {
+    display: table;
+    width: 100%;
+    border: 1px solid gainsboro;
+}
+th,
+td {
+    padding: 0.3rem 0;
+    text-align: center;
+    border-left: 1px solid gainsboro;
+    border-top: 1px solid gainsboro;
+}
+
+th:first-child,
+td:first-child {
+    border-left: none;
 }
