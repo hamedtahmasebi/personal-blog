@@ -12,6 +12,7 @@
     "dependencies": {
         "@apollo/client": "^3.6.9",
         "@prisma/client": "^4.0.0",
+        "argon2": "^0.28.7",
         "axios": "^0.27.2",
         "contentful": "^9.1.32",
         "graphql": "^16.5.0",
