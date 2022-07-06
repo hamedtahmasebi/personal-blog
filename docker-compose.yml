@@ -3,7 +3,7 @@ services:
     nextjs-blog-mysql-db:
         image: mysql
         volumes:
-            - "./.data/db:/var/lib/mysql"
+            - "/var/lib/mysql"
         environment:
             MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
             MYSQL_DATABASE: nextjs-blog-db
