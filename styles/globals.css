@@ -27,6 +27,10 @@ html {
         font-size: 14px;
     }
 }
+body {
+    color: #504e4e;
+}
+
 body.dark {
     color: #ddd;
     @apply bg-slate-800;
