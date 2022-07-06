@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LoginForm from "./login-form";
 import SignUpForm from "./signup-form";
-export default function Register() {
+export default function Auth() {
     const [formType, setFormType] = useState<"signup" | "login">("signup");
 
     return (
