@@ -4,10 +4,15 @@ import PrimaryButton from "../../components/primary-button";
 import { validateEmail } from "../../utilities/actions";
 import { registerErrors } from "../../utilities/errorMessages";
 import { BiErrorCircle } from "react-icons/bi";
+import { login as loginApiEndpoint } from "../../utilities/apiEndPoints";
+import axios, { AxiosError } from "axios";
+import { baseUrl } from "../../utilities/routes";
+import Spinner from "../../components/spinner";
 const LoginForm = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [errors, setErrors] = useState<string[]>([]);
+    const [isPending, setIsPending] = useState<boolean>(false);
     const validateForm = () => {
         let errors = [];
         if (!(email && password)) {
@@ -20,10 +25,25 @@ const LoginForm = () => {
         return errors;
     };
 
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        setIsPending(true);
         e.preventDefault();
         const errors = validateForm();
         if (errors.length !== 0) return;
+
+        try {
+            const res = await axios.post(baseUrl + loginApiEndpoint, { email, password });
+            if (res.data.accessToken) {
+                console.log(res.data.accessToken);
+                sessionStorage.setItem("next_blog_session_id", res.data.accessToken);
+            }
+        } catch (error) {
+            if (error instanceof AxiosError && error.response?.data.error) {
+                setErrors([error.response.data.error]);
+            }
+            console.log(error);
+        }
+        setIsPending(false);
     };
 
     return (
@@ -64,8 +84,13 @@ const LoginForm = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <PrimaryButton type="submit" className="w-full rounded-md mt-4">
-                Log in
+            <PrimaryButton disabled={isPending} type="submit" className="w-full rounded-md mt-4">
+                {isPending && (
+                    <div className="h-auto w-8 mx-auto">
+                        <Spinner />
+                    </div>
+                )}
+                {!isPending && "Log in"}
             </PrimaryButton>
         </form>
     );

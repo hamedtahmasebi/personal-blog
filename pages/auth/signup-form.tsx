@@ -4,6 +4,10 @@ import PrimaryButton from "../../components/primary-button";
 import { validateEmail } from "../../utilities/actions";
 import { registerErrors } from "../../utilities/errorMessages";
 import { BiErrorCircle } from "react-icons/bi";
+import Spinner from "../../components/spinner";
+import axios, { AxiosError } from "axios";
+import { baseUrl } from "../../utilities/routes";
+import { signup as signupApiEndpoint } from "../../utilities/apiEndPoints";
 const SignUpForm: React.FC = () => {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -11,7 +15,7 @@ const SignUpForm: React.FC = () => {
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [errors, setErrors] = useState<string[]>([]);
-
+    const [isPending, setIsPending] = useState<boolean>(false);
     const validateForm = () => {
         let errors = [];
         if (!(email && password && confirmPassword)) {
@@ -27,10 +31,27 @@ const SignUpForm: React.FC = () => {
         return errors;
     };
 
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsPending(true);
         const errors = validateForm();
         if (errors.length !== 0) return;
+        try {
+            const res = await axios.post(baseUrl + signupApiEndpoint, {
+                firstName,
+                lastName,
+                email,
+                password,
+            });
+            if (res.data.accessToken) {
+                sessionStorage.setItem("next_blog_session_id", res.data.accessToken);
+            }
+        } catch (error) {
+            if (error instanceof AxiosError && error.response?.data.error) {
+                setErrors([error.response.data.error]);
+            }
+        }
+        setIsPending(false);
     };
 
     return (
@@ -99,8 +120,13 @@ const SignUpForm: React.FC = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                 />
             </div>
-            <PrimaryButton type="submit" className="w-full rounded-md mt-4">
-                Create Account
+            <PrimaryButton disabled={isPending} type="submit" className="w-full rounded-md mt-4">
+                {isPending && (
+                    <div className="h-8 w-8 mx-auto">
+                        <Spinner />
+                    </div>
+                )}
+                {!isPending && "Create Account"}{" "}
             </PrimaryButton>
         </form>
     );
