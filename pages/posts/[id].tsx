@@ -95,7 +95,7 @@ export const contentDestructureAlgo = (node: TContent, index: number) => {
                 return <li>{reRunFunctionOneLayerDeeper(node)}</li>;
             case "blockquote":
                 return (
-                    <div className="border-l-8 border-primary-main bg-primary-100 dark:border-primaryDark-main dark:bg-primaryDark-200 text-black rounded py-2 pl-6">
+                    <div className="border-l-8 border-primary-main bg-primary-50 dark:border-primaryDark-main dark:bg-primaryDark-200 text-black rounded py-2 pl-6">
                         {reRunFunctionOneLayerDeeper(node)}
                     </div>
                 );
