@@ -3,7 +3,7 @@ import prisma from "../../lib/prisma";
 import * as argon2 from "argon2";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 export const signup: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { first_name, last_name, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     if (!email || !password) {
         res.status(400).json({
@@ -24,8 +24,8 @@ export const signup: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
         if (possibleUserAccount === null) {
             const result = await prisma.user.create({
                 data: {
-                    first_name,
-                    last_name,
+                    first_name: firstName,
+                    last_name: lastName,
                     email,
                     password: hash,
                 },

@@ -19,7 +19,7 @@ const routes: IRoute[] = [
     },
     {
         title: "Sign Up/Log in",
-        link: `/${ROUTES.REGISTER}`,
+        link: `/${ROUTES.AUTH}`,
     },
 ];
 export const SideBar = () => {
