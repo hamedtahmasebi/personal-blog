@@ -33,9 +33,8 @@ const LoginForm = () => {
 
         try {
             const res = await axios.post(baseUrl + loginApiEndpoint, { email, password });
-            if (res.data.accessToken) {
-                console.log(res.data.accessToken);
-                sessionStorage.setItem("next_blog_session_id", res.data.accessToken);
+            if (res.data.access_token) {
+                sessionStorage.setItem("access_token", res.data.access_token);
             }
         } catch (error) {
             if (error instanceof AxiosError && error.response?.data.error) {

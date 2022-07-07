@@ -19,14 +19,14 @@ const login: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) 
     const isVerified = await argon2.verify(dbResult.password, password);
     if (isVerified) {
         return res.status(200).json({
-            accessToken: createJWT(email),
+            access_token: createJWT(dbResult.email, dbResult.id),
         });
     }
     return res.status(401).json({ error: "Invalid credentials" });
 };
 
-function createJWT(username: string) {
-    return jwt.sign({ username: username }, process.env.JWT_SECRET as string, {
+function createJWT(email: string, user_id: string) {
+    return jwt.sign({ sub: user_id, email }, process.env.JWT_SECRET as string, {
         expiresIn: JWT_EXPIRY_TIME,
     });
 }
