@@ -10,7 +10,10 @@ import { Maybe } from "graphql/jsutils/Maybe";
 import PopUp from "../pop-up";
 import PrimaryButton from "../primary-button";
 import * as ROUTES from "../../utilities/routes";
+import axios from "axios";
+import { ADD_BOOKMARK } from "../../utilities/apiEndPoints";
 interface IPostPreviewCard {
+    post_id: string;
     title: string;
     url: string;
     summary: string;
@@ -20,6 +23,7 @@ interface IPostPreviewCard {
 }
 
 export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
+    post_id,
     title,
     date,
     url,
@@ -32,11 +36,19 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
 
     const [showAlert, setShowAlert] = React.useState(false);
 
-    const bookmark = React.useRef<HTMLButtonElement>(null);
-
-    if (bookmark) {
-        bookmark.current?.onmouseover;
-    }
+    const addBookmark = async () => {
+        let access_token = sessionStorage.getItem("access_token");
+        if (!access_token) throw new Error("Access token not found");
+        try {
+            const res = await axios.post(
+                ROUTES.baseUrl + ADD_BOOKMARK,
+                { post_id },
+                { headers: { access_token } }
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <div className="flex my-1 rounded">
@@ -107,10 +119,10 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                             </div>
                             <div className="flex gap-1 mr-4 relative">
                                 <button
-                                    ref={bookmark}
                                     onMouseOver={(e) => setShowAlert(true)}
                                     onMouseLeave={(e) => setShowAlert(false)}
                                     className="ml-2 hover:text-black transition-all p-1"
+                                    onClick={addBookmark}
                                 >
                                     <BsBookmarkPlus size={22} />
                                 </button>
