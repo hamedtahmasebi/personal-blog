@@ -2,7 +2,7 @@ import { useState } from "react";
 import LoginForm from "./login-form";
 import SignUpForm from "./signup-form";
 export default function Auth() {
-    const [formType, setFormType] = useState<"signup" | "login">("signup");
+    const [formType, setFormType] = useState<"signup" | "login">("login");
 
     return (
         <div className="flex justify-center w-full mt-4">

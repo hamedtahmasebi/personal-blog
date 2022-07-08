@@ -6,9 +6,11 @@ import { registerErrors } from "../../utilities/errorMessages";
 import { BiErrorCircle } from "react-icons/bi";
 import Spinner from "../../components/spinner";
 import axios, { AxiosError } from "axios";
-import { baseUrl } from "../../utilities/routes";
+import * as ROUTES from "../../utilities/routes";
 import { signup as signupApiEndpoint } from "../../utilities/apiEndPoints";
+import { useRouter } from "next/router";
 const SignUpForm: React.FC = () => {
+    const router = useRouter();
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -37,14 +39,14 @@ const SignUpForm: React.FC = () => {
         const errors = validateForm();
         if (errors.length !== 0) return;
         try {
-            const res = await axios.post(baseUrl + signupApiEndpoint, {
+            const res = await axios.post(ROUTES.baseUrl + signupApiEndpoint, {
                 firstName,
                 lastName,
                 email,
                 password,
             });
-            if (res.data.accessToken) {
-                sessionStorage.setItem("next_blog_session_id", res.data.accessToken);
+            if (res.status === 200) {
+                router.push(ROUTES.baseUrl + ROUTES.HOME);
             }
         } catch (error) {
             if (error instanceof AxiosError && error.response?.data.error) {

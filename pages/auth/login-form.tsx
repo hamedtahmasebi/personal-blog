@@ -6,9 +6,11 @@ import { registerErrors } from "../../utilities/errorMessages";
 import { BiErrorCircle } from "react-icons/bi";
 import { login as loginApiEndpoint } from "../../utilities/apiEndPoints";
 import axios, { AxiosError } from "axios";
-import { baseUrl } from "../../utilities/routes";
 import Spinner from "../../components/spinner";
+import { useRouter } from "next/router";
+import * as ROUTES from "../../utilities/routes";
 const LoginForm = () => {
+    const router = useRouter();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [errors, setErrors] = useState<string[]>([]);
@@ -26,22 +28,26 @@ const LoginForm = () => {
     };
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        setIsPending(true);
         e.preventDefault();
+
+        setIsPending(true);
+
         const errors = validateForm();
         if (errors.length !== 0) return;
 
         try {
-            const res = await axios.post(baseUrl + loginApiEndpoint, { email, password });
-            if (res.data.access_token) {
-                sessionStorage.setItem("access_token", res.data.access_token);
+            const res = await axios.post(ROUTES.baseUrl + loginApiEndpoint, { email, password });
+            if (res.status === 200) {
+                router.push(ROUTES.baseUrl + ROUTES.HOME);
             }
         } catch (error) {
             if (error instanceof AxiosError && error.response?.data.error) {
                 setErrors([error.response.data.error]);
             }
+            setErrors(["Something went wrong"]);
             console.log(error);
         }
+
         setIsPending(false);
     };
 
