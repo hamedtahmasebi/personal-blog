@@ -4,19 +4,13 @@ import withAuth from "../../middlewares/withAuth";
 import jwt from "jsonwebtoken";
 
 const addBookmark: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const token = req.headers.access_token || undefined;
+    const { token } = req.cookies;
     const post_id = req.body.post_id;
-    if (!post_id) {
-        return res.status(401).json({ error: "post_id is required" });
-    }
-    if (!token || typeof token !== "string") {
-        return res
-            .status(401)
-            .json({ error: "Access token was not provided or it has invalid type" });
-    }
+    if (!token) return res.status(401).json({ error: "User has not authenticated" });
+    if (!post_id) return res.status(401).json({ error: "post_id is required" });
     const { sub } = jwt.verify(token, process.env.JWT_SECRET as string);
     if (!(sub && typeof sub === "string"))
-        return res.status(401).json({ error: "Access token is invalid" });
+        return res.status(401).json({ error: "Authentication Failed, please log in again" });
     try {
         const user = await prisma.user.findUnique({
             where: {
