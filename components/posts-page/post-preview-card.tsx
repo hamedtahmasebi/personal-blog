@@ -9,6 +9,7 @@ import { ContentfulMetadata, ContentfulTag } from "../../generated/graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
 import PopUp from "../pop-up";
 import PrimaryButton from "../primary-button";
+import * as ROUTES from "../../utilities/routes";
 interface IPostPreviewCard {
     title: string;
     url: string;
@@ -122,9 +123,11 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                                         <div className="text-xs">
                                             To add a bookmark you have to login
                                         </div>
-                                        <PrimaryButton className="rounded-md py-0 mt-2">
-                                            <span className="text-xs">Login</span>
-                                        </PrimaryButton>
+                                        <Link href={ROUTES.AUTH}>
+                                            <PrimaryButton className="rounded-md py-0 mt-2">
+                                                <span className="text-xs">Login</span>
+                                            </PrimaryButton>
+                                        </Link>
                                     </PopUp>
                                 )}
                                 <button className="ml-2 hover:text-red-900 transition-all p-1">
