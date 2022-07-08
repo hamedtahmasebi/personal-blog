@@ -2,7 +2,8 @@ import * as argon2 from "argon2";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 import jwt from "jsonwebtoken";
-const JWT_EXPIRY_TIME: string = "3h";
+import cookie from "cookie";
+const JWT_EXPIRY_TIME: string = "1h";
 const login: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -10,7 +11,7 @@ const login: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) 
     }
     const dbResult = await prisma.user.findUnique({
         where: {
-            email: email,
+            email,
         },
     });
     if (dbResult === null) {
@@ -18,15 +19,24 @@ const login: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) 
     }
     const isVerified = await argon2.verify(dbResult.password, password);
     if (isVerified) {
-        return res.status(200).json({
-            access_token: createJWT(dbResult.email, dbResult.id),
+        const token = createJwtToken(dbResult.id);
+
+        const serializedCookie = cookie.serialize("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            sameSite: "strict",
+            maxAge: 60 * 60, //one hour in seconds
+            path: "/",
         });
+
+        res.setHeader("Set-Cookie", serializedCookie);
+        return res.status(200).end();
     }
     return res.status(401).json({ error: "Invalid credentials" });
 };
 
-function createJWT(email: string, user_id: string) {
-    return jwt.sign({ sub: user_id, email }, process.env.JWT_SECRET as string, {
+function createJwtToken(user_id: string) {
+    return jwt.sign({ sub: user_id }, process.env.JWT_SECRET as string, {
         expiresIn: JWT_EXPIRY_TIME,
     });
 }
