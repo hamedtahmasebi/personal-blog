@@ -45,7 +45,6 @@ const Posts = ({
 }) => {
     if (!(blogPostCollection && blogPostCollection.items))
         throw new Error("Something went wrong while building UI");
-    console.log(blogPostCollection.items[0]?.contentfulMetadata.tags);
     return (
         <div className="flex justify-center mt-6">
             <div className="w-full md:w-3/5">
