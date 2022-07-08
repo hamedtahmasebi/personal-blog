@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import placeholderImage from "../../public/placeholder-image.png";
 import profileAvatarPlaceholder from "../../public/profile-avatar-placeholder.png";
 import { BsBookmarkPlus } from "react-icons/bs";
 import { BiMinusCircle } from "react-icons/bi";
 import { ContentfulMetadata, ContentfulTag } from "../../generated/graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
+import PopUp from "../pop-up";
+import PrimaryButton from "../primary-button";
 interface IPostPreviewCard {
     title: string;
     url: string;
@@ -26,6 +28,15 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
 }) => {
     const dateFormatter = Intl.DateTimeFormat("en", { month: "short", day: "numeric" });
     const dateString = `${dateFormatter.format(new Date(date))}`;
+
+    const [showAlert, setShowAlert] = React.useState(false);
+
+    const bookmark = React.useRef<HTMLButtonElement>(null);
+
+    if (bookmark) {
+        bookmark.current?.onmouseover;
+    }
+
     return (
         <div className="flex my-1 rounded">
             <div className="grid grid-cols-6 w-full">
@@ -93,11 +104,30 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                             <div className="flex">
                                 <span className="text-sm">3 min read</span>
                             </div>
-                            <div className="flex gap-1 mr-4">
-                                <button className="ml-2 hover:text-black transition-all">
+                            <div className="flex gap-1 mr-4 relative">
+                                <button
+                                    ref={bookmark}
+                                    onMouseOver={(e) => setShowAlert(true)}
+                                    onMouseLeave={(e) => setShowAlert(false)}
+                                    className="ml-2 hover:text-black transition-all p-1"
+                                >
                                     <BsBookmarkPlus size={22} />
                                 </button>
-                                <button className="ml-2 hover:text-red-900 transition-all">
+                                {showAlert && !sessionStorage.getItem("access_token") && (
+                                    <PopUp
+                                        onMouseOver={(e) => setShowAlert(true)}
+                                        onMouseLeave={(e) => setShowAlert(false)}
+                                        style={{ top: "35px", left: "5px" }}
+                                    >
+                                        <div className="text-xs">
+                                            To add a bookmark you have to login
+                                        </div>
+                                        <PrimaryButton className="rounded-md py-0 mt-2">
+                                            <span className="text-xs">Login</span>
+                                        </PrimaryButton>
+                                    </PopUp>
+                                )}
+                                <button className="ml-2 hover:text-red-900 transition-all p-1">
                                     <BiMinusCircle size={22} />
                                 </button>
                             </div>
