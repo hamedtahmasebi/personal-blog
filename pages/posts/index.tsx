@@ -1,11 +1,23 @@
 import { gql } from "@apollo/client";
-import { GetStaticProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React from "react";
 import { PostPreviewCard } from "../../components/posts-page/post-preview-card";
-import { BlogPost, BlogPostsQuery } from "../../generated/graphql";
+import { BlogPostsQuery } from "../../generated/graphql";
 import apolloClient from "../../lib/apollo-client";
-export const getStaticProps: GetStaticProps = async () => {
-    const { data, error } = await apolloClient.query({
+import prisma from "../../lib/prisma";
+import jwt from "jsonwebtoken";
+
+interface IProps {
+    blogPostCollection: BlogPostsQuery["blogPostCollection"];
+    userBookmarksIds: string[] | null;
+}
+
+export const getServerSideProps: GetServerSideProps = async (
+    context: GetServerSidePropsContext
+) => {
+    const { req, res } = context;
+
+    const { data: postsData } = await apolloClient.query<BlogPostsQuery>({
         query: gql`
             query blogPosts {
                 blogPostCollection {
@@ -31,24 +43,47 @@ export const getStaticProps: GetStaticProps = async () => {
             }
         `,
     });
+
+    if (req.cookies.token) {
+        const { sub } = jwt.verify(req.cookies.token, process.env.JWT_SECRET as string);
+        if (sub && typeof sub === "string") {
+            try {
+                const bookmarkedPosts = await prisma.bookmark.findMany({
+                    where: {
+                        user_id: sub,
+                    },
+                });
+                const bookmarkedPostsIds: string[] = bookmarkedPosts.map((item) => item.id);
+                return {
+                    props: {
+                        blogPostCollection: postsData.blogPostCollection,
+                        userBookmarksIds: bookmarkedPostsIds,
+                    },
+                };
+            } catch (error) {
+                res.statusCode === 500;
+                console.error(error);
+                res.end();
+            }
+        }
+    }
+
+    const props: IProps = {
+        blogPostCollection: postsData.blogPostCollection,
+        userBookmarksIds: null,
+    };
+
     return {
-        props: {
-            blogPostCollection: data.blogPostCollection,
-        },
+        props,
     };
 };
 
-const Posts = ({
-    blogPostCollection,
-}: {
-    blogPostCollection: BlogPostsQuery["blogPostCollection"];
-}) => {
+const Posts = ({ blogPostCollection, userBookmarksIds }: IProps) => {
     if (!(blogPostCollection && blogPostCollection.items))
         throw new Error("Something went wrong while building UI");
     return (
         <div className="flex justify-center mt-6">
             <div className="w-full md:w-3/5">
-                {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8"> */}
                 <div className="flex flex-col gap-4 mt-8">
                     {blogPostCollection.items.map((post, index) => {
                         return (
@@ -71,6 +106,10 @@ const Posts = ({
                                             date={post?.sys.publishedAt}
                                             url={`/posts/${post?.sys.id}`}
                                             tags={post?.contentfulMetadata.tags}
+                                            bookmark={
+                                                userBookmarksIds &&
+                                                userBookmarksIds.includes(post.sys.id)
+                                            }
                                         />
                                     </div>
                                     <div className="lg:w-3/5 px-5">

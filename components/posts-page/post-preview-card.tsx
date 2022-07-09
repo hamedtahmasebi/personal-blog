@@ -3,15 +3,16 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import placeholderImage from "../../public/placeholder-image.png";
 import profileAvatarPlaceholder from "../../public/profile-avatar-placeholder.png";
-import { BsBookmarkPlus } from "react-icons/bs";
+import { BsBookmarkPlus, BsFillBookmarkCheckFill } from "react-icons/bs";
 import { BiMinusCircle } from "react-icons/bi";
 import { ContentfulMetadata, ContentfulTag } from "../../generated/graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
 import PopUp from "../pop-up";
 import PrimaryButton from "../primary-button";
 import * as ROUTES from "../../utilities/routes";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ADD_BOOKMARK } from "../../utilities/apiEndPoints";
+import { toast } from "react-toastify";
 interface IPostPreviewCard {
     post_id: string;
     title: string;
@@ -20,6 +21,7 @@ interface IPostPreviewCard {
     imgUrl?: string;
     date: Date;
     tags?: ContentfulMetadata["tags"];
+    bookmark?: boolean | null;
 }
 
 export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
@@ -30,23 +32,27 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
     imgUrl,
     summary,
     tags,
+    bookmark,
 }) => {
     const dateFormatter = Intl.DateTimeFormat("en", { month: "short", day: "numeric" });
     const dateString = `${dateFormatter.format(new Date(date))}`;
 
     const [showAlert, setShowAlert] = React.useState(false);
-
-    const addBookmark = async () => {
-        let access_token = sessionStorage.getItem("access_token");
-        if (!access_token) throw new Error("Access token not found");
-        try {
-            const res = await axios.post(
-                ROUTES.baseUrl + ADD_BOOKMARK,
-                { post_id },
-                { headers: { access_token } }
-            );
-        } catch (error) {
-            console.error(error);
+    const [isBookmarked, setIsBookmarked] = React.useState(bookmark);
+    const handleClickOnBookmark = async () => {
+        if (!isBookmarked) {
+            try {
+                await axios.post(ROUTES.baseUrl + ADD_BOOKMARK, { post_id });
+                toast.success("Added bookmark", { toastId: "added-bookmark" });
+                setIsBookmarked(true);
+            } catch (error) {
+                if (error instanceof AxiosError && error.response?.data.isAuthenticated === false) {
+                    toast.error("To add bookmark, you have to log in", {
+                        toastId: "bookmark-auth-error",
+                    });
+                }
+                console.error(error);
+            }
         }
     };
 
@@ -122,9 +128,16 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                                     onMouseOver={(e) => setShowAlert(true)}
                                     onMouseLeave={(e) => setShowAlert(false)}
                                     className="ml-2 hover:text-black transition-all p-1"
-                                    onClick={addBookmark}
+                                    onClick={handleClickOnBookmark}
                                 >
-                                    <BsBookmarkPlus size={22} />
+                                    {isBookmarked ? (
+                                        <BsFillBookmarkCheckFill
+                                            size={22}
+                                            className="text-emerald-600"
+                                        />
+                                    ) : (
+                                        <BsBookmarkPlus size={22} />
+                                    )}
                                 </button>
                                 {showAlert && !sessionStorage.getItem("access_token") && (
                                     <PopUp

@@ -1,12 +1,14 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
-import withAuth from "../../middlewares/withAuth";
 import jwt from "jsonwebtoken";
 
 const addBookmark: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { token } = req.cookies;
     const post_id = req.body.post_id;
-    if (!token) return res.status(401).json({ error: "User has not authenticated" });
+    if (!token)
+        return res
+            .status(401)
+            .json({ error: "User has not authenticated", isAuthenticated: false });
     if (!post_id) return res.status(401).json({ error: "post_id is required" });
     const { sub } = jwt.verify(token, process.env.JWT_SECRET as string);
     if (!(sub && typeof sub === "string"))
@@ -31,4 +33,4 @@ const addBookmark: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
     }
 };
 
-export default withAuth(addBookmark);
+export default addBookmark;

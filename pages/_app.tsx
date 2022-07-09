@@ -1,8 +1,10 @@
 import "../styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app";
 import Layout from "../components/Layout";
 import { useEffect } from "react";
 import { switchDarkMode } from "../utilities/actions";
+import { ToastContainer } from "react-toastify";
 function MyApp({ Component, pageProps }: AppProps) {
     function darkModeInitializer() {
         let darkModeStatus = localStorage.getItem("darkMode");
@@ -13,9 +15,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         darkModeInitializer();
     });
     return (
-        <Layout>
-            <Component {...pageProps} />
-        </Layout>
+        <>
+            <Layout>
+                <Component {...pageProps} />
+            </Layout>
+            <ToastContainer position={"bottom-right"} style={{ width: "fit-content" }} />
+        </>
     );
 }
 
