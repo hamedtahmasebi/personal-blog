@@ -1,18 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import placeholderImage from "../../public/placeholder-image.png";
 import profileAvatarPlaceholder from "../../public/profile-avatar-placeholder.png";
 import { BsBookmarkPlus, BsFillBookmarkCheckFill } from "react-icons/bs";
 import { BiMinusCircle } from "react-icons/bi";
 import { ContentfulMetadata, ContentfulTag } from "../../generated/graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
-import PopUp from "../pop-up";
-import PrimaryButton from "../primary-button";
 import * as ROUTES from "../../utilities/routes";
 import axios, { AxiosError } from "axios";
 import { ADD_BOOKMARK } from "../../utilities/apiEndPoints";
 import { toast } from "react-toastify";
+import Modal from "../modal";
+import LoginForm from "../../pages/auth/login-form";
 interface IPostPreviewCard {
     post_id: string;
     title: string;
@@ -37,7 +37,7 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
     const dateFormatter = Intl.DateTimeFormat("en", { month: "short", day: "numeric" });
     const dateString = `${dateFormatter.format(new Date(date))}`;
 
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
     const [isBookmarked, setIsBookmarked] = React.useState(bookmark);
     const handleClickOnBookmark = async () => {
         if (!isBookmarked) {
@@ -46,10 +46,11 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                 toast.success("Added bookmark", { toastId: "added-bookmark" });
                 setIsBookmarked(true);
             } catch (error) {
-                if (error instanceof AxiosError && error.response?.data.isAuthenticated === false) {
-                    toast.error("To add bookmark, you have to log in", {
-                        toastId: "bookmark-auth-error",
-                    });
+                if (error instanceof AxiosError) {
+                    error.response?.data.error && toast.error(error.response?.data.error);
+                    if (error.response?.data.isAuthenticated === false) {
+                        setShowLoginModal(true);
+                    }
                 }
                 console.error(error);
             }
@@ -58,6 +59,16 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
 
     return (
         <div className="flex my-1 rounded">
+            {showLoginModal && (
+                <Modal onClose={() => setShowLoginModal(false)}>
+                    <div>
+                        <p className="text-center">Please log in to bookmark a post</p>
+                        <div className="mt-4">
+                            <LoginForm onSuccessLogin={() => setShowLoginModal(false)} />
+                        </div>
+                    </div>
+                </Modal>
+            )}
             <div className="grid grid-cols-6 w-full">
                 <div className="col-span-4">
                     <div className="flex items-center text-gray-500 dark:text-gray-200">
@@ -125,8 +136,6 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                             </div>
                             <div className="flex gap-1 mr-4 relative">
                                 <button
-                                    onMouseOver={(e) => setShowAlert(true)}
-                                    onMouseLeave={(e) => setShowAlert(false)}
                                     className="ml-2 hover:text-black transition-all p-1"
                                     onClick={handleClickOnBookmark}
                                 >
@@ -139,22 +148,6 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                                         <BsBookmarkPlus size={22} />
                                     )}
                                 </button>
-                                {showAlert && !sessionStorage.getItem("access_token") && (
-                                    <PopUp
-                                        onMouseOver={(e) => setShowAlert(true)}
-                                        onMouseLeave={(e) => setShowAlert(false)}
-                                        style={{ top: "35px", left: "5px" }}
-                                    >
-                                        <div className="text-xs">
-                                            To add a bookmark you have to login
-                                        </div>
-                                        <Link href={ROUTES.AUTH}>
-                                            <PrimaryButton className="rounded-md py-0 mt-2">
-                                                <span className="text-xs">Login</span>
-                                            </PrimaryButton>
-                                        </Link>
-                                    </PopUp>
-                                )}
                                 <button className="ml-2 hover:text-red-900 transition-all p-1">
                                     <BiMinusCircle size={22} />
                                 </button>

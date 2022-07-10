@@ -20,6 +20,16 @@ const addBookmark: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
             },
         });
         if (!user) throw new Error("User not found in database");
+
+        const possibleBookmark = await prisma.bookmark.findFirst({
+            where: {
+                id: req.body.post_id,
+                user_id: sub,
+            },
+        });
+
+        if (possibleBookmark) return res.status(400).json({ error: "Already bookmarked" });
+
         await prisma.bookmark.create({
             data: {
                 user_id: sub,
