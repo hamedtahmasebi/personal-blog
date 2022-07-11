@@ -9,7 +9,7 @@ import { ContentfulMetadata, ContentfulTag } from "../../generated/graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
 import * as ROUTES from "../../utilities/routes";
 import axios, { AxiosError } from "axios";
-import { ADD_BOOKMARK } from "../../utilities/apiEndPoints";
+import { BOOKMARK } from "../../utilities/apiEndPoints";
 import { toast } from "react-toastify";
 import Modal from "../modal";
 import LoginForm from "../../pages/auth/login-form";
@@ -39,12 +39,13 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
 
     const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
     const [isBookmarked, setIsBookmarked] = React.useState(bookmark);
-    const handleClickOnBookmark = async () => {
+    const handleClickOnBookmark = async (): Promise<void> => {
         if (!isBookmarked) {
             try {
-                await axios.post(ROUTES.baseUrl + ADD_BOOKMARK, { post_id });
-                toast.success("Added bookmark", { toastId: "added-bookmark" });
+                await axios.post(`${ROUTES.baseUrl}/${BOOKMARK}/${post_id}`);
+                toast.success("Added bookmark successfully", { toastId: post_id.slice(3) });
                 setIsBookmarked(true);
+                return;
             } catch (error) {
                 if (error instanceof AxiosError) {
                     error.response?.data.error && toast.error(error.response?.data.error);
@@ -53,6 +54,21 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                     }
                 }
                 console.error(error);
+                return;
+            }
+        }
+        if (isBookmarked) {
+            try {
+                const res = await axios.delete(`${ROUTES.baseUrl}/${BOOKMARK}/${post_id}`);
+                if (res.status === 200) {
+                    toast.success("Deleted bookmark successfully");
+                    setIsBookmarked(false);
+                    return;
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error("Something went wrong");
+                return;
             }
         }
     };
