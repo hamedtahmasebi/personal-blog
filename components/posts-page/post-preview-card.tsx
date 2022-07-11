@@ -4,7 +4,6 @@ import React from "react";
 import placeholderImage from "../../public/placeholder-image.png";
 import profileAvatarPlaceholder from "../../public/profile-avatar-placeholder.png";
 import { BsBookmarkPlus, BsFillBookmarkCheckFill } from "react-icons/bs";
-import { BiMinusCircle } from "react-icons/bi";
 import { ContentfulMetadata, ContentfulTag } from "../../generated/graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
 import * as ROUTES from "../../utilities/routes";
@@ -163,9 +162,6 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                                     ) : (
                                         <BsBookmarkPlus size={22} />
                                     )}
-                                </button>
-                                <button className="ml-2 hover:text-red-900 transition-all p-1">
-                                    <BiMinusCircle size={22} />
                                 </button>
                             </div>
                         </div>
