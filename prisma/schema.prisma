@@ -25,4 +25,5 @@ model Bookmark {
   id String @unique @id
   user User @relation(fields: [user_id], references: [id])
   user_id String
+  @@unique([id , user_id])
 }

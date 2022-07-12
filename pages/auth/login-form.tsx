@@ -9,7 +9,14 @@ import axios, { AxiosError } from "axios";
 import Spinner from "../../components/spinner";
 import { useRouter } from "next/router";
 import * as ROUTES from "../../utilities/routes";
-const LoginForm = () => {
+import { toast } from "react-toastify";
+
+type TProps = {
+    onSuccessLogin?: Function;
+    onFailLogin?: Function;
+};
+
+const LoginForm = ({ onSuccessLogin, onFailLogin }: TProps) => {
     const router = useRouter();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -38,13 +45,16 @@ const LoginForm = () => {
         try {
             const res = await axios.post(ROUTES.baseUrl + loginApiEndpoint, { email, password });
             if (res.status === 200) {
-                router.push(ROUTES.baseUrl + ROUTES.HOME);
+                toast.success("Logged In successfully");
+                onSuccessLogin && onSuccessLogin();
+                return;
             }
         } catch (error) {
             if (error instanceof AxiosError && error.response?.data.error) {
                 setErrors([error.response.data.error]);
             }
             setErrors(["Something went wrong"]);
+            onFailLogin && onFailLogin();
             console.log(error);
         }
 
