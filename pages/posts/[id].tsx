@@ -76,7 +76,7 @@ export const contentDestructureAlgo = (node: TContent, index: number) => {
     if (node.content) {
         switch (node.nodeType.toLowerCase()) {
             case "heading-1":
-                return <h1 className="text-5xl my-1">{reRunFunctionOneLayerDeeper(node)}</h1>;
+                return <h1 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h1>;
             case "heading-2":
                 return <h2 className="mt-2">{reRunFunctionOneLayerDeeper(node)}</h2>;
             case "heading-3":
@@ -118,7 +118,7 @@ export const Post = ({ blogPostData }: { blogPostData: BlogPost }) => {
     return (
         <div className="flex w-full justify-center mt-12">
             <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 px-8">
-                <h1 className="font-extrabold md:text-5xl text-primary-main dark:text-primaryDark-main">
+                <h1 className="font-extrabold md:text-4xl text-primary-main dark:text-primaryDark-main">
                     {title}
                 </h1>
                 <article className="mt-6">{reactElementsArr.map((el: ReactElement) => el)}</article>

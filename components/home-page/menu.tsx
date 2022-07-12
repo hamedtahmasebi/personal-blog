@@ -32,7 +32,7 @@ export const Menu: React.FC<Props> = ({ routes, close }) => {
                  md:flex-row px-5 py-6 md:px-24 md:h-auto w-3/4 md:w-full absolute md:relative 
                  text-primary-400 text-primary-main  dark:text-primaryDark-main font-bold`}
             >
-                <h1 className="text-5xl font-bold my-auto">Nextjs blog</h1>
+                <h1 className="text-4xl font-bold my-auto">Nextjs blog</h1>
 
                 <ul className="flex flex-col md:flex-row md:justify-center md:items-center mt-4 md:mt-0 md:ml-8 h-full list-none">
                     {routes.map((route, index) => (
