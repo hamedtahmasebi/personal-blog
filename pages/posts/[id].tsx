@@ -97,24 +97,29 @@ export const contentDestructureAlgo = (
             case "heading-1":
                 return <h1 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h1>;
             case "heading-2":
-                return <h2 className="mt-2">{reRunFunctionOneLayerDeeper(node)}</h2>;
+                return <h2 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h2>;
             case "heading-3":
-                return <h3 className="mt-2">{reRunFunctionOneLayerDeeper(node)}</h3>;
+                return <h3 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h3>;
             case "heading-4":
-                return <h4 className="mt-2">{reRunFunctionOneLayerDeeper(node)}</h4>;
+                return <h4 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h4>;
             case "heading-5":
-                return <h5 className="mt-2">{reRunFunctionOneLayerDeeper(node)}</h5>;
+                return <h5 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h5>;
             case "paragraph":
                 return <Paragraph key={`paragraph-${index}`} contentfulNode={node} />;
             case "unordered-list":
-                return <ul>{reRunFunctionOneLayerDeeper(node)}</ul>;
+                return <ul className="my-1">{reRunFunctionOneLayerDeeper(node)}</ul>;
             case "ordered-list":
-                return <ol>{reRunFunctionOneLayerDeeper(node)}</ol>;
+                return <ol className="my-1">{reRunFunctionOneLayerDeeper(node)}</ol>;
             case "list-item":
                 return <li>{reRunFunctionOneLayerDeeper(node)}</li>;
             case "blockquote":
                 return (
-                    <div className="border-l-8 border-primary-main bg-primary-50 dark:border-primaryDark-main dark:bg-primaryDark-200 text-black rounded py-2 pl-6">
+                    <div
+                        className=" 
+                        border-l-8 rounded py-2 pl-6 my-1
+                        border-primary-main bg-primary-50 dark:border-primaryDark-main dark:bg-primaryDark-200 text-black 
+                        "
+                    >
                         {reRunFunctionOneLayerDeeper(node)}
                     </div>
                 );
@@ -124,7 +129,6 @@ export const contentDestructureAlgo = (
                 const indexOfPicture = links?.assets.block.findIndex(
                     (item) => item?.sys.id !== node.data.target.sys.id
                 );
-                console.log(indexOfPicture);
                 if (!indexOfPicture)
                     throw new Error("Something went wrong while destructuring pictures");
                 const asset = links?.assets.block.at(indexOfPicture);

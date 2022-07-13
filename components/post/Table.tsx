@@ -20,7 +20,7 @@ export const Table = ({ contentfulNode }: { contentfulNode: TContent }) => {
     let tableCellRows = tableRows.filter((row) => row?.rowType === "cell");
 
     return (
-        <table className="">
+        <table className="my-1">
             <thead>
                 {/* creates the thead rows */}
                 {tableHeadingRows.map((row, rowIndex) => (
