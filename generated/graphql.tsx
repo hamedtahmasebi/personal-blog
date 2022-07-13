@@ -596,6 +596,11 @@ export type SysFilter = {
   publishedVersion_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
 };
 
+export type BlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BlogPostsQuery = { __typename?: 'Query', blogPostCollection?: { __typename?: 'BlogPostCollection', items: Array<{ __typename?: 'BlogPost', title?: string | null, sys: { __typename?: 'Sys', id: string, publishedAt?: any | null }, articleContent?: { __typename?: 'BlogPostArticleContent', json: any } | null, picture?: { __typename?: 'Asset', url?: string | null } | null, contentfulMetadata: { __typename?: 'ContentfulMetadata', tags: Array<{ __typename?: 'ContentfulTag', name?: string | null } | null> } } | null> } | null };
+
 export type BlogPostCollectionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -606,90 +611,9 @@ export type BlogPostQueryVariables = Exact<{
 }>;
 
 
-export type BlogPostQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPost', title?: string | null, articleContent?: { __typename?: 'BlogPostArticleContent', json: any } | null } | null };
-
-export type BlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type BlogPostQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPost', title?: string | null, articleContent?: { __typename?: 'BlogPostArticleContent', json: any, links: { __typename?: 'BlogPostArticleContentLinks', assets: { __typename?: 'BlogPostArticleContentAssets', block: Array<{ __typename?: 'Asset', url?: string | null, title?: string | null, sys: { __typename?: 'Sys', id: string } } | null> } } } | null, sys: { __typename?: 'Sys', firstPublishedAt?: any | null, publishedAt?: any | null } } | null };
 
 
-export type BlogPostsQuery = { __typename?: 'Query', blogPostCollection?: { __typename?: 'BlogPostCollection', items: Array<{ __typename?: 'BlogPost', title?: string | null, sys: { __typename?: 'Sys', id: string, publishedAt?: any | null }, articleContent?: { __typename?: 'BlogPostArticleContent', json: any } | null, picture?: { __typename?: 'Asset', url?: string | null } | null, contentfulMetadata: { __typename?: 'ContentfulMetadata', tags: Array<{ __typename?: 'ContentfulTag', name?: string | null } | null> } } | null> } | null };
-
-
-export const BlogPostCollectionDocument = gql`
-    query blogPostCollection {
-  blogPostCollection {
-    items {
-      sys {
-        id
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useBlogPostCollectionQuery__
- *
- * To run a query within a React component, call `useBlogPostCollectionQuery` and pass it any options that fit your needs.
- * When your component renders, `useBlogPostCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useBlogPostCollectionQuery({
- *   variables: {
- *   },
- * });
- */
-export function useBlogPostCollectionQuery(baseOptions?: Apollo.QueryHookOptions<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>(BlogPostCollectionDocument, options);
-      }
-export function useBlogPostCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>(BlogPostCollectionDocument, options);
-        }
-export type BlogPostCollectionQueryHookResult = ReturnType<typeof useBlogPostCollectionQuery>;
-export type BlogPostCollectionLazyQueryHookResult = ReturnType<typeof useBlogPostCollectionLazyQuery>;
-export type BlogPostCollectionQueryResult = Apollo.QueryResult<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>;
-export const BlogPostDocument = gql`
-    query blogPost($id: String!) {
-  blogPost(id: $id) {
-    title
-    articleContent {
-      json
-    }
-  }
-}
-    `;
-
-/**
- * __useBlogPostQuery__
- *
- * To run a query within a React component, call `useBlogPostQuery` and pass it any options that fit your needs.
- * When your component renders, `useBlogPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useBlogPostQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useBlogPostQuery(baseOptions: Apollo.QueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
-      }
-export function useBlogPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
-        }
-export type BlogPostQueryHookResult = ReturnType<typeof useBlogPostQuery>;
-export type BlogPostLazyQueryHookResult = ReturnType<typeof useBlogPostLazyQuery>;
-export type BlogPostQueryResult = Apollo.QueryResult<BlogPostQuery, BlogPostQueryVariables>;
 export const BlogPostsDocument = gql`
     query blogPosts {
   blogPostCollection {
@@ -741,3 +665,94 @@ export function useBlogPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type BlogPostsQueryHookResult = ReturnType<typeof useBlogPostsQuery>;
 export type BlogPostsLazyQueryHookResult = ReturnType<typeof useBlogPostsLazyQuery>;
 export type BlogPostsQueryResult = Apollo.QueryResult<BlogPostsQuery, BlogPostsQueryVariables>;
+export const BlogPostCollectionDocument = gql`
+    query blogPostCollection {
+  blogPostCollection {
+    items {
+      sys {
+        id
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useBlogPostCollectionQuery__
+ *
+ * To run a query within a React component, call `useBlogPostCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBlogPostCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBlogPostCollectionQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBlogPostCollectionQuery(baseOptions?: Apollo.QueryHookOptions<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>(BlogPostCollectionDocument, options);
+      }
+export function useBlogPostCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>(BlogPostCollectionDocument, options);
+        }
+export type BlogPostCollectionQueryHookResult = ReturnType<typeof useBlogPostCollectionQuery>;
+export type BlogPostCollectionLazyQueryHookResult = ReturnType<typeof useBlogPostCollectionLazyQuery>;
+export type BlogPostCollectionQueryResult = Apollo.QueryResult<BlogPostCollectionQuery, BlogPostCollectionQueryVariables>;
+export const BlogPostDocument = gql`
+    query blogPost($id: String!) {
+  blogPost(id: $id) {
+    title
+    articleContent {
+      json
+      links {
+        assets {
+          block {
+            url
+            title
+            sys {
+              id
+            }
+          }
+        }
+      }
+    }
+    sys {
+      firstPublishedAt
+      publishedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useBlogPostQuery__
+ *
+ * To run a query within a React component, call `useBlogPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBlogPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBlogPostQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useBlogPostQuery(baseOptions: Apollo.QueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
+      }
+export function useBlogPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
+        }
+export type BlogPostQueryHookResult = ReturnType<typeof useBlogPostQuery>;
+export type BlogPostLazyQueryHookResult = ReturnType<typeof useBlogPostLazyQuery>;
+export type BlogPostQueryResult = Apollo.QueryResult<BlogPostQuery, BlogPostQueryVariables>;

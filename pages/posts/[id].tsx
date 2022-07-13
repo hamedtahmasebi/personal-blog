@@ -2,10 +2,10 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import React, { ReactElement } from "react";
 import apolloClient from "../../lib/apollo-client";
 import { gql } from "@apollo/client";
-import { BlogPost } from "../../generated/graphql";
+import { BlogPost, BlogPostArticleContentLinks } from "../../generated/graphql";
 import Paragraph from "../../components/post/Paragraph";
 import { Table } from "../../components/post/Table";
-
+import Image from "next/image";
 export type TContent = {
     nodeType: string;
     data: any;
@@ -48,6 +48,21 @@ export const getStaticProps: GetStaticProps = async (context: GetStaticPropsCont
                     title
                     articleContent {
                         json
+                        links {
+                            assets {
+                                block {
+                                    url
+                                    title
+                                    sys {
+                                        id
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    sys {
+                        firstPublishedAt
+                        publishedAt
                     }
                 }
             }
@@ -66,7 +81,11 @@ export const getStaticProps: GetStaticProps = async (context: GetStaticPropsCont
 // This is a recursive algorithm, in each step, an HTML element will wrap the returned value
 // at the end where there are no more elements to add, we will return the value
 // some nodeTypes require further work, I have created separate components for those
-export const contentDestructureAlgo = (node: TContent, index: number) => {
+export const contentDestructureAlgo = (
+    node: TContent,
+    index: number,
+    links?: BlogPostArticleContentLinks
+) => {
     const reRunFunctionOneLayerDeeper = (node: TContent) => {
         return node.content!.map((contentObj: TContent) =>
             contentDestructureAlgo(contentObj, index)
@@ -101,6 +120,23 @@ export const contentDestructureAlgo = (node: TContent, index: number) => {
                 );
             case "table":
                 return <Table contentfulNode={node} />;
+            case "embedded-asset-block":
+                const indexOfPicture = links?.assets.block.findIndex(
+                    (item) => item?.sys.id !== node.data.target.sys.id
+                );
+                console.log(indexOfPicture);
+                if (!indexOfPicture)
+                    throw new Error("Something went wrong while destructuring pictures");
+                const asset = links?.assets.block.at(indexOfPicture);
+                if (!asset || !asset.url)
+                    throw new Error(
+                        `Destructuring pictures: Could not find a url for asset node with id: ${node.data.target.sys.id}`
+                    );
+                return (
+                    <div className="my-4 w-full h-[50vh] relative rounded">
+                        <Image src={asset.url} layout={"fill"} objectFit={"cover"} alt="post" />
+                    </div>
+                );
             default:
                 break;
         }
@@ -110,17 +146,28 @@ export const contentDestructureAlgo = (node: TContent, index: number) => {
     }
 };
 export const Post = ({ blogPostData }: { blogPostData: BlogPost }) => {
-    const { title, articleContent } = blogPostData;
+    const { title, articleContent, sys } = blogPostData;
     const { content: contentfulContentArr } = articleContent?.json;
     const reactElementsArr = contentfulContentArr.map((node: TContent, index: number) => {
-        return contentDestructureAlgo(node, index);
+        return contentDestructureAlgo(node, index, blogPostData.articleContent?.links);
     });
+
+    const publishDate = new Date(sys.publishedAt);
+
     return (
         <div className="flex w-full justify-center mt-12">
             <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 px-8">
-                <h1 className="font-extrabold md:text-4xl text-primary-main dark:text-primaryDark-main">
-                    {title}
-                </h1>
+                <div>
+                    <h1 className="font-extrabold md:text-4xl text-primary-main dark:text-primaryDark-main">
+                        {title}
+                    </h1>
+                    <span className="text-gray-600 dark:text-gray-200 text-base">
+                        {publishDate.toLocaleDateString("en-us", {
+                            day: "numeric",
+                            month: "short",
+                        })}
+                    </span>
+                </div>
                 <article className="mt-6">{reactElementsArr.map((el: ReactElement) => el)}</article>
             </div>
         </div>
