@@ -42,14 +42,12 @@ export const SideBar = () => {
                         hidden
                         onChange={(e) => setOpenMenu(!openMenu)}
                     />
-                    <span className="text-[2rem]">
-                        <RiMenuFill />
-                    </span>
+
+                    <RiMenuFill size={25} />
                 </label>
-                <div className="text-4xl">Logo</div>
-                <div className="text-[2rem]">
-                    <RiSearch2Line />
-                </div>
+                <div className="text-4xl">Nextjs blog</div>
+
+                <RiSearch2Line size={25} />
             </div>
 
             <div

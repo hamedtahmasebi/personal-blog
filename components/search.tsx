@@ -2,7 +2,11 @@ import { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useRouter } from "next/router";
 
-export const Search: React.FC = () => {
+type TProps = {
+    onSubmit: () => void;
+};
+
+export const Search: React.FC<TProps> = ({ onSubmit }) => {
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -10,6 +14,7 @@ export const Search: React.FC = () => {
         <form
             onSubmit={(e) => {
                 e.preventDefault();
+                onSubmit();
                 router.push(`/posts/search?search_term=${searchTerm}`);
             }}
         >

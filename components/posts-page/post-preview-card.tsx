@@ -108,23 +108,21 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                     <div className="mt-2">
                         <Link href={url}>
                             <a className="">
-                                <h4
+                                <h3
                                     className="font-extrabold leading-8 transition-all duration-100 
                                 text-primary-main hover:text-primary-200 
                                 dark:text-primaryDark-main dark:hover:text-primaryDark-200"
                                 >
                                     {title}
-                                </h4>
+                                </h3>
                             </a>
                         </Link>
 
-                        {summary && (
-                            <Link href={url}>
-                                <p className="hidden md:block hover:underline hover:cursor-pointer">
-                                    {summary}
-                                </p>
-                            </Link>
-                        )}
+                        <Link href={url}>
+                            <p className="hidden md:block hover:underline hover:cursor-pointer text-[15px]">
+                                {summary ? summary : " "}
+                            </p>
+                        </Link>
 
                         {tags && (
                             <p className="mt-3">
@@ -147,7 +145,7 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                             </p>
                         )}
 
-                        <div className="flex justify-between items-center text-gray-500 dark:text-gray-200 mt-2">
+                        <div className="flex justify-between items-center text-gray-500 dark:text-gray-200 mt-4">
                             <div className="flex">
                                 <span className="text-sm">3 min read</span>
                             </div>

@@ -54,7 +54,7 @@ export const Menu: React.FC<Props> = ({ routes, close }) => {
                         </li>
                     ))}
                     <li className="md:ml-auto md:w-1/5">
-                        <Search onSubmit={() => console.log("RUN")} />
+                        <Search onSubmit={() => close()} />
                     </li>
                     <li className="flex mt-auto ml-4 md:mt-0">
                         <div className="">
