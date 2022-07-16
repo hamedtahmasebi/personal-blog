@@ -118,11 +118,13 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                             </a>
                         </Link>
 
-                        <Link href={url}>
-                            <p className="hidden md:block hover:underline hover:cursor-pointer">
-                                {summary}
-                            </p>
-                        </Link>
+                        {summary && (
+                            <Link href={url}>
+                                <p className="hidden md:block hover:underline hover:cursor-pointer">
+                                    {summary}
+                                </p>
+                            </Link>
+                        )}
 
                         {tags && (
                             <p className="mt-3">

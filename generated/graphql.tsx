@@ -596,6 +596,11 @@ export type SysFilter = {
   publishedVersion_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
 };
 
+export type PostSearchQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostSearchQuery = { __typename?: 'Query', blogPostCollection?: { __typename?: 'BlogPostCollection', items: Array<{ __typename?: 'BlogPost', title?: string | null, sys: { __typename?: 'Sys', id: string, publishedAt?: any | null }, contentfulMetadata: { __typename?: 'ContentfulMetadata', tags: Array<{ __typename?: 'ContentfulTag', name?: string | null, id?: string | null } | null> } } | null> } | null };
+
 export type BlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -614,6 +619,52 @@ export type BlogPostQueryVariables = Exact<{
 export type BlogPostQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPost', title?: string | null, articleContent?: { __typename?: 'BlogPostArticleContent', json: any, links: { __typename?: 'BlogPostArticleContentLinks', assets: { __typename?: 'BlogPostArticleContentAssets', block: Array<{ __typename?: 'Asset', url?: string | null, title?: string | null, sys: { __typename?: 'Sys', id: string } } | null> } } } | null, sys: { __typename?: 'Sys', firstPublishedAt?: any | null, publishedAt?: any | null } } | null };
 
 
+export const PostSearchDocument = gql`
+    query PostSearch {
+  blogPostCollection {
+    items {
+      title
+      sys {
+        id
+        publishedAt
+      }
+      contentfulMetadata {
+        tags {
+          name
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostSearchQuery__
+ *
+ * To run a query within a React component, call `usePostSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostSearchQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePostSearchQuery(baseOptions?: Apollo.QueryHookOptions<PostSearchQuery, PostSearchQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PostSearchQuery, PostSearchQueryVariables>(PostSearchDocument, options);
+      }
+export function usePostSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostSearchQuery, PostSearchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PostSearchQuery, PostSearchQueryVariables>(PostSearchDocument, options);
+        }
+export type PostSearchQueryHookResult = ReturnType<typeof usePostSearchQuery>;
+export type PostSearchLazyQueryHookResult = ReturnType<typeof usePostSearchLazyQuery>;
+export type PostSearchQueryResult = Apollo.QueryResult<PostSearchQuery, PostSearchQueryVariables>;
 export const BlogPostsDocument = gql`
     query blogPosts {
   blogPostCollection {

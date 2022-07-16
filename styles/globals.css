@@ -95,3 +95,7 @@ th:first-child,
 td:first-child {
     border-left: none;
 }
+
+input {
+    background-color: transparent;
+}

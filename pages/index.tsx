@@ -78,6 +78,16 @@ export const getServerSideProps: GetServerSideProps = async (
     };
 };
 
+export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    return (
+        <div className="flex justify-center mt-6">
+            <div className="w-full md:w-3/5">
+                <div className="flex flex-col gap-4 mt-8">{children}</div>
+            </div>
+        </div>
+    );
+};
+
 const Posts = ({ blogPostCollection, userBookmarksIds }: IProps) => {
     if (!(blogPostCollection && blogPostCollection.items))
         throw new Error("Something went wrong while building UI");
