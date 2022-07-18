@@ -29,8 +29,8 @@ export const Menu: React.FC<Props> = ({ routes, close }) => {
     return (
         <div className="flex">
             <div
-                className={`bg-white shadow-lg dark:bg-slate-800 h-screen flex flex-col
-                 md:flex-row px-5 py-6 md:px-12 lg:px-24 md:h-auto w-3/4 md:w-full absolute md:relative 
+                className={`bg-white border-b dark:bg-slate-800 h-screen flex flex-col
+                 md:flex-row px-5 py-6 md:px-12 lg:px-24 md:h-auto w-3/4 md:w-full
                  text-primary-400 text-primary-main  dark:text-primaryDark-main font-bold`}
             >
                 <h1 className="text-4xl font-bold my-auto md:w-1/6">Nextjs blog</h1>

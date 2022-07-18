@@ -80,10 +80,8 @@ export const getServerSideProps: GetServerSideProps = async (
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <div className="flex justify-center mt-6">
-            <div className="w-full md:w-3/5">
-                <div className="flex flex-col gap-4 mt-8">{children}</div>
-            </div>
+        <div className="mt-6 w-full">
+            <div className="flex flex-col gap-4 mt-8">{children}</div>
         </div>
     );
 };
@@ -92,46 +90,35 @@ const Posts = ({ blogPostCollection, userBookmarksIds }: IProps) => {
     if (!(blogPostCollection && blogPostCollection.items))
         throw new Error("Something went wrong while building UI");
     return (
-        <div className="flex justify-center mt-6">
-            <div className="w-full md:w-3/5">
-                <div className="flex flex-col gap-4 mt-8">
-                    {blogPostCollection.items.map((post, index) => {
-                        return (
-                            post?.sys.id && (
-                                <>
-                                    <div
-                                        className="w-full lg:w-3/5 px-5"
-                                        key={`post-preview-${index}`}
-                                    >
-                                        <PostPreviewCard
-                                            summary={
-                                                post?.articleContent?.json.content[0].content[0].value.slice(
-                                                    0,
-                                                    80
-                                                ) + "..."
-                                            }
-                                            post_id={post?.sys.id}
-                                            title={post?.title || "UNTITLED"}
-                                            imgUrl={post?.picture?.url || undefined}
-                                            date={post?.sys.publishedAt}
-                                            url={`/posts/${post?.sys.id}`}
-                                            tags={post?.contentfulMetadata.tags}
-                                            bookmark={
-                                                userBookmarksIds &&
-                                                userBookmarksIds.includes(post.sys.id)
-                                            }
-                                        />
-                                    </div>
-                                    <div className="lg:w-3/5 px-5">
-                                        <hr />
-                                    </div>
-                                </>
-                            )
-                        );
-                    })}
-                </div>
-            </div>
-        </div>
+        <Layout>
+            {blogPostCollection.items.map((post, index) => {
+                return (
+                    post?.sys.id && (
+                        <>
+                            <PostPreviewCard
+                                key={`post-preview-${index}`}
+                                summary={
+                                    post?.articleContent?.json.content[0].content[0].value.slice(
+                                        0,
+                                        80
+                                    ) + "..."
+                                }
+                                post_id={post?.sys.id}
+                                title={post?.title || "UNTITLED"}
+                                imgUrl={post?.picture?.url || undefined}
+                                date={post?.sys.publishedAt}
+                                url={`/posts/${post?.sys.id}`}
+                                tags={post?.contentfulMetadata.tags}
+                                bookmark={
+                                    userBookmarksIds && userBookmarksIds.includes(post.sys.id)
+                                }
+                            />
+                            <hr />
+                        </>
+                    )
+                );
+            })}
+        </Layout>
     );
 };
 

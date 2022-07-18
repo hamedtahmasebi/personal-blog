@@ -160,7 +160,7 @@ export const Post = ({ blogPostData }: { blogPostData: BlogPost }) => {
 
     return (
         <div className="flex w-full justify-center mt-12">
-            <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 px-8">
+            <div className="flex flex-col w-full md:px-8">
                 <div>
                     <h1 className="font-extrabold md:text-4xl text-primary-main dark:text-primaryDark-main">
                         {title}
