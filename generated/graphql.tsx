@@ -599,7 +599,7 @@ export type SysFilter = {
 export type PostSearchQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PostSearchQuery = { __typename?: 'Query', blogPostCollection?: { __typename?: 'BlogPostCollection', items: Array<{ __typename?: 'BlogPost', title?: string | null, sys: { __typename?: 'Sys', id: string, publishedAt?: any | null }, contentfulMetadata: { __typename?: 'ContentfulMetadata', tags: Array<{ __typename?: 'ContentfulTag', name?: string | null, id?: string | null } | null> } } | null> } | null };
+export type PostSearchQuery = { __typename?: 'Query', blogPostCollection?: { __typename?: 'BlogPostCollection', items: Array<{ __typename?: 'BlogPost', title?: string | null, picture?: { __typename?: 'Asset', url?: string | null } | null, articleContent?: { __typename?: 'BlogPostArticleContent', json: any } | null, sys: { __typename?: 'Sys', id: string, publishedAt?: any | null }, contentfulMetadata: { __typename?: 'ContentfulMetadata', tags: Array<{ __typename?: 'ContentfulTag', name?: string | null, id?: string | null } | null> } } | null> } | null };
 
 export type BlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -624,6 +624,12 @@ export const PostSearchDocument = gql`
   blogPostCollection {
     items {
       title
+      picture {
+        url
+      }
+      articleContent {
+        json
+      }
       sys {
         id
         publishedAt

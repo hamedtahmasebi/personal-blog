@@ -4,7 +4,6 @@ import { PostSearchQuery } from "../../generated/graphql";
 import apolloClient from "../../lib/apollo-client";
 
 const search: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(req.body);
     if (!req.body.searchTerm) return res.status(400).json({ error: "No search term was provided" });
     try {
         const { data } = await apolloClient.query<PostSearchQuery>({
@@ -13,6 +12,9 @@ const search: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse)
                     blogPostCollection {
                         items {
                             title
+                            picture {
+                                url
+                            }
                             articleContent {
                                 json
                             }
@@ -33,12 +35,13 @@ const search: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse)
         });
 
         if (!data.blogPostCollection) return res.status(500).end();
-        const searchRes = data.blogPostCollection.items.filter((post) =>
+        const searchResItems = data.blogPostCollection.items.filter((post) =>
             post?.title?.match(new RegExp(req.body.searchTerm, "i"))
         );
-        if (searchRes && searchRes.length === 0)
-            return res.status(404).json({ error: "Not found" });
-        res.status(200).json({ searchResult: searchRes });
+
+        const searchResult = { ...data.blogPostCollection, items: searchResItems };
+
+        if (searchResItems) return res.status(200).json({ searchResult });
     } catch (error) {
         console.log(error);
         res.status(500).end();

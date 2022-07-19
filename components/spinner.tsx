@@ -1,10 +1,19 @@
 import React from "react";
 
-export const Spinner = () => {
+type TProps = {
+    background?: string;
+    fill?: string;
+};
+
+export const Spinner: React.FC<TProps> = ({ background, fill }) => {
     return (
         <svg
             role="status"
-            className="h-auto  w-auto flex animate-spin text-white text-opacity-50 fill-white"
+            style={{
+                color: background ?? "#eee",
+                fill: fill ?? "gray",
+            }}
+            className="h-auto  w-auto flex animate-spin text-opacity-50"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
