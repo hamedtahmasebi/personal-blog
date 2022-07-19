@@ -1,12 +1,12 @@
 import { gql } from "@apollo/client";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import React from "react";
+import React, { ReactElement } from "react";
 import { PostPreviewCard } from "../components/posts-page/post-preview-card";
 import { BlogPostsQuery } from "../generated/graphql";
 import apolloClient from "../lib/apollo-client";
 import prisma from "../lib/prisma";
 import jwt from "jsonwebtoken";
-
+import Layout from "../components/Layout";
 interface IProps {
     blogPostCollection: BlogPostsQuery["blogPostCollection"];
     userBookmarksIds: string[] | null;
@@ -78,48 +78,46 @@ export const getServerSideProps: GetServerSideProps = async (
     };
 };
 
-export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return (
-        <div className="mt-6 w-full">
-            <div className="flex flex-col gap-4 mt-8">{children}</div>
-        </div>
-    );
-};
-
 const Posts = ({ blogPostCollection, userBookmarksIds }: IProps) => {
     if (!(blogPostCollection && blogPostCollection.items))
         throw new Error("Something went wrong while building UI");
     return (
-        <Layout>
-            {blogPostCollection.items.map((post, index) => {
-                return (
-                    post?.sys.id && (
-                        <>
-                            <PostPreviewCard
-                                key={`post-preview-${index}`}
-                                summary={
-                                    post?.articleContent?.json.content[0].content[0].value.slice(
-                                        0,
-                                        80
-                                    ) + "..."
-                                }
-                                post_id={post?.sys.id}
-                                title={post?.title || "UNTITLED"}
-                                imgUrl={post?.picture?.url || undefined}
-                                date={post?.sys.publishedAt}
-                                url={`/posts/${post?.sys.id}`}
-                                tags={post?.contentfulMetadata.tags}
-                                bookmark={
-                                    userBookmarksIds && userBookmarksIds.includes(post.sys.id)
-                                }
-                            />
-                            <hr />
-                        </>
-                    )
-                );
-            })}
-        </Layout>
+        <div className="mt-6 w-full">
+            <div className="flex flex-col gap-4 mt-8">
+                {blogPostCollection.items.map((post, index) => {
+                    return (
+                        post?.sys.id && (
+                            <>
+                                <PostPreviewCard
+                                    key={`post-preview-${index}`}
+                                    summary={
+                                        post?.articleContent?.json.content[0].content[0].value.slice(
+                                            0,
+                                            80
+                                        ) + "..."
+                                    }
+                                    post_id={post?.sys.id}
+                                    title={post?.title || "UNTITLED"}
+                                    imgUrl={post?.picture?.url || undefined}
+                                    date={post?.sys.publishedAt}
+                                    url={`/posts/${post?.sys.id}`}
+                                    tags={post?.contentfulMetadata.tags}
+                                    bookmark={
+                                        userBookmarksIds && userBookmarksIds.includes(post.sys.id)
+                                    }
+                                />
+                                <hr />
+                            </>
+                        )
+                    );
+                })}
+            </div>
+        </div>
     );
+};
+
+Posts.getLayout = function getLayout(page: ReactElement) {
+    return <Layout>{page}</Layout>;
 };
 
 export default Posts;

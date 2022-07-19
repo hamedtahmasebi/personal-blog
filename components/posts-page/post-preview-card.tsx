@@ -11,7 +11,7 @@ import axios, { AxiosError } from "axios";
 import { BOOKMARK } from "../../utilities/apiEndPoints";
 import { toast } from "react-toastify";
 import Modal from "../modal";
-import LoginForm from "../../pages/auth/login-form";
+import Register from "../auth/register";
 interface IPostPreviewCard {
     post_id: string;
     title: string;
@@ -79,7 +79,7 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                     <div>
                         <p className="text-center">Please log in to bookmark a post</p>
                         <div className="mt-4">
-                            <LoginForm onSuccessLogin={() => setShowLoginModal(false)} />
+                            <Register />
                         </div>
                     </div>
                 </Modal>

@@ -3,7 +3,6 @@ import { PostPreviewCard } from "../../components/posts-page/post-preview-card";
 import { BlogPost } from "../../generated/graphql";
 import { baseUrl } from "../../utilities/routes";
 import { useRouter } from "next/router";
-import { Layout as PostsPageLayout } from "../index";
 import { BsChevronLeft } from "react-icons/bs";
 import axios from "axios";
 import Link from "next/link";
@@ -32,7 +31,7 @@ export const Search: React.FC = () => {
     }, [query]);
 
     return (
-        <PostsPageLayout>
+        <>
             <div className="w-full lg:w-3/5 px-5">
                 <div className="flex items-center">
                     <Link href={`/`}>
@@ -62,7 +61,7 @@ export const Search: React.FC = () => {
                     );
                 })}
             </div>
-        </PostsPageLayout>
+        </>
     );
 
     // return (

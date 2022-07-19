@@ -5,6 +5,7 @@ import { gql } from "@apollo/client";
 import { BlogPost, BlogPostArticleContentLinks } from "../../generated/graphql";
 import Paragraph from "../../components/post/Paragraph";
 import { Table } from "../../components/post/Table";
+import Layout from "../../components/Layout";
 import Image from "next/image";
 export type TContent = {
     nodeType: string;
@@ -95,21 +96,21 @@ export const contentDestructureAlgo = (
     if (node.content) {
         switch (node.nodeType.toLowerCase()) {
             case "heading-1":
-                return <h1 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h1>;
+                return <h1 className="mt-4 mb-1">{reRunFunctionOneLayerDeeper(node)}</h1>;
             case "heading-2":
-                return <h2 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h2>;
+                return <h2 className="mt-4 mb-1">{reRunFunctionOneLayerDeeper(node)}</h2>;
             case "heading-3":
-                return <h3 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h3>;
+                return <h3 className="mt-4 mb-1">{reRunFunctionOneLayerDeeper(node)}</h3>;
             case "heading-4":
-                return <h4 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h4>;
+                return <h4 className="mt-4 mb-1">{reRunFunctionOneLayerDeeper(node)}</h4>;
             case "heading-5":
-                return <h5 className="my-1">{reRunFunctionOneLayerDeeper(node)}</h5>;
+                return <h5 className="mt-4 mb-1">{reRunFunctionOneLayerDeeper(node)}</h5>;
             case "paragraph":
                 return <Paragraph key={`paragraph-${index}`} contentfulNode={node} />;
             case "unordered-list":
-                return <ul className="my-1">{reRunFunctionOneLayerDeeper(node)}</ul>;
+                return <ul className="mt-4 mb-1">{reRunFunctionOneLayerDeeper(node)}</ul>;
             case "ordered-list":
-                return <ol className="my-1">{reRunFunctionOneLayerDeeper(node)}</ol>;
+                return <ol className="mt-4 mb-1">{reRunFunctionOneLayerDeeper(node)}</ol>;
             case "list-item":
                 return <li>{reRunFunctionOneLayerDeeper(node)}</li>;
             case "blockquote":
@@ -176,6 +177,10 @@ export const Post = ({ blogPostData }: { blogPostData: BlogPost }) => {
             </div>
         </div>
     );
+};
+
+Post.getLayout = function (page: React.ReactElement) {
+    return <Layout>{page}</Layout>;
 };
 
 export default Post;
