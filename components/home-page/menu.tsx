@@ -7,7 +7,7 @@ import { BiSun } from "react-icons/bi";
 import { IoMoon } from "react-icons/io5";
 import { switchDarkMode } from "../../utilities/actions";
 import { useEffect, useLayoutEffect } from "react";
-import Search from "../search";
+import Search from "../search-bar";
 interface Props {
     routes: IRoute[];
     close: () => void;

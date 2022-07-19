@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useRouter } from "next/router";
+import * as ROUTES from "../utilities/routes";
 
 type TProps = {
-    onSubmit: () => void;
+    onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+    defaultValue?: string;
 };
 
-export const Search: React.FC<TProps> = ({ onSubmit }) => {
+export const SearchBar: React.FC<TProps> = ({ onSubmit, defaultValue }) => {
     const router = useRouter();
-    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [searchTerm, setSearchTerm] = useState<string>(defaultValue ?? "");
 
     return (
         <form
             onSubmit={(e) => {
                 e.preventDefault();
-                onSubmit();
-                router.push(`/posts/search?search_term=${searchTerm}`);
+                onSubmit && onSubmit(e);
+                router.push(ROUTES.baseUrl + ROUTES.SEARCH + `?search_term=${searchTerm}`);
             }}
         >
             <label
@@ -26,12 +28,13 @@ export const Search: React.FC<TProps> = ({ onSubmit }) => {
             "
             >
                 <span>
-                    <BsSearch />
+                    <BsSearch size={20} />
                 </span>
                 <input
                     type="text"
-                    className="outline-none w-full peer"
+                    className="outline-none w-full peer text-gray-700 dark:text-slate-200"
                     placeholder="Search"
+                    value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </label>
@@ -39,4 +42,4 @@ export const Search: React.FC<TProps> = ({ onSubmit }) => {
     );
 };
 
-export default Search;
+export default SearchBar;

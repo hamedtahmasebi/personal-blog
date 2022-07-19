@@ -7,10 +7,12 @@ import { SEARCH } from "../../utilities/apiEndPoints";
 import Spinner from "../../components/spinner";
 import { PostSearchQuery } from "../../generated/graphql";
 import { PostPreviewCard } from "../../components/posts-page/post-preview-card";
+import SearchBar from "../../components/search-bar";
 export const Search = () => {
-    const { query } = useRouter();
+    const router = useRouter();
+    const { query } = router;
     const [searchResult, setSearchResult] = useState<PostSearchQuery["blogPostCollection"]>();
-    const [isPending, setIsPending] = useState<boolean>(true);
+    const [isPending, setIsPending] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const search = async () => {
         setIsPending(true);
@@ -45,11 +47,21 @@ export const Search = () => {
 
     return (
         <div className="mt-12">
-            {error && <span className="text-red-600">{error}</span>}
-            {!error && (
+            <div className="my-3">
+                <SearchBar
+                    defaultValue={typeof query.search_term === "string" ? query.search_term : ""}
+                />
+            </div>
+            {!query.search_term && (
+                <span className="text-slate-600">
+                    Please enter a keyword and hit Enter to search
+                </span>
+            )}
+            {error && <b className="text-red-600">{error}</b>}
+            {query.search_term && !error && (
                 <>
                     <h3 className="text-slate-600 dark:text-slate-300">
-                        Search Results for :{" "}
+                        Search Results for:{" "}
                         <span className="text-black dark:text-white">{query.search_term}</span>
                     </h3>
                     {searchResult?.items && searchResult.items.length === 0 && (
