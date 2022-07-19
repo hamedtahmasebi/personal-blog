@@ -87,7 +87,7 @@ const Posts = ({ blogPostCollection, userBookmarksIds }: IProps) => {
                 {blogPostCollection.items.map((post, index) => {
                     return (
                         post?.sys.id && (
-                            <>
+                            <div className="">
                                 <PostPreviewCard
                                     key={`post-preview-${index}`}
                                     summary={
@@ -106,8 +106,10 @@ const Posts = ({ blogPostCollection, userBookmarksIds }: IProps) => {
                                         userBookmarksIds && userBookmarksIds.includes(post.sys.id)
                                     }
                                 />
-                                <hr />
-                            </>
+                                <div className="mt-4">
+                                    <hr />
+                                </div>
+                            </div>
                         )
                     );
                 })}
