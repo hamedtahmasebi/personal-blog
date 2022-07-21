@@ -20,14 +20,14 @@ export const Table = ({ contentfulNode }: { contentfulNode: TContent }) => {
     let tableCellRows = tableRows.filter((row) => row?.rowType === "cell");
 
     return (
-        <table className="my-1">
+        <table className="table my-1">
             <thead>
                 {/* creates the thead rows */}
                 {tableHeadingRows.map((row, rowIndex) => (
                     <tr key={`tr-${row?.rowType}-${rowIndex}`}>
                         {/* creates th elements */}
                         {row?.content.map((th, headingIndex) => (
-                            <th className="font-bold" key={`th-${row.rowType}-${headingIndex}`}>
+                            <th className="th font-bold" key={`th-${row.rowType}-${headingIndex}`}>
                                 {/* Runs the algorithm on th content and returns expected elements */}
                                 {th.content?.map((contentObj, headingContentIndex) =>
                                     contentDestructureAlgo(contentObj, headingContentIndex)
@@ -43,7 +43,7 @@ export const Table = ({ contentfulNode }: { contentfulNode: TContent }) => {
                     <tr key={`tr-${row?.rowType}-${index}`}>
                         {/* creates td elements */}
                         {row?.content.map((td, index2) => (
-                            <td key={`td-${row.rowType}-${index2}`}>
+                            <td className="td" key={`td-${row.rowType}-${index2}`}>
                                 {/* Runs the algorithm on td content and returns expected elements */}
                                 {td.content?.map((contentObj, index3) =>
                                     contentDestructureAlgo(contentObj, index3)

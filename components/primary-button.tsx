@@ -8,6 +8,7 @@ const PrimaryButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = (
             bg-primary-main dark:bg-primaryDark-main font-bold text-lg 
             hover:bg-primary-200 dark:hover:bg-primaryDark-300
             disabled:bg-opacity-80
+            new-shadow
             ${props.className}`}
             {...restOfProps}
         >

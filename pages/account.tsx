@@ -1,10 +1,12 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma";
 import { User } from "@prisma/client";
-
+import PrimaryButton from "../components/primary-button";
+import SimpleInput from "../components/simple-input";
+import SecondaryButton from "../components/secondary-button";
 type TPageProps = {
     user: Omit<User, "password">;
 };
@@ -52,28 +54,69 @@ export const Account: NextPage<TPageProps> & {
     getLayout: (page: React.ReactElement) => React.ReactElement;
 } = ({ user }) => {
     const [editMode, setEditMode] = React.useState<boolean>(false);
+    const [accountDetails, setAccountDetails] = useState<Omit<User, "password">>({ ...user });
+
+    type TInput = {
+        label: string;
+        key: "first_name" | "last_name";
+    };
+
+    const inputs: TInput[] = [
+        { label: "First name", key: "first_name" },
+        { label: "Last name", key: "last_name" },
+    ];
+
     return (
         <div className="w-full mt-12">
             <div className="flex flex-col">
                 <h4 className="text-black dark:text-white">Account details</h4>
-                <div className="py-4">
-                    <div className="flex">
-                        <span>
-                            First name <span>Something</span>
-                        </span>
-                        <span>
-                            Last name <span>Something</span>
-                        </span>
+                <div className="flex flex-col gap-4 py-4">
+                    <div className="flex items-center gap-4 w-full">
+                        <span className="text-base w-full">Email</span>
+                        <SimpleInput
+                            placeholder="Email"
+                            type={"text"}
+                            value={user.email}
+                            disabled
+                            className="border rounded-md"
+                        />
                     </div>
-                    <div className="flex w-1/2 gap-4 justify-between mt-4">
-                        <div className="flex gap-4 bg-slate-100 py-2 px-4 rounded-lg">
-                            <span className="text-base">Email</span>{" "}
-                            <span className="text-base text-black font-semibold dark:text-white ">
-                                {user.email}
-                            </span>
+                    {inputs.map((input, index) => (
+                        <div
+                            key={`account-details-input-${index}`}
+                            className="flex items-center gap-4 w-full"
+                        >
+                            <span className="text-base w-full">{input.label}</span>
+                            <SimpleInput
+                                placeholder={input.label}
+                                type="text"
+                                value={accountDetails[input.key] ?? ""}
+                                disabled={!editMode}
+                                className="border rounded-md"
+                                onChange={(e) =>
+                                    setAccountDetails({
+                                        ...accountDetails,
+                                        [input.key]: e.target.value,
+                                    })
+                                }
+                            />
                         </div>
-                    </div>
+                    ))}
                 </div>
+            </div>
+            <div className="ml-auto w-fit">
+                <SecondaryButton
+                    className=" rounded-md"
+                    onClick={(e) => {
+                        setAccountDetails({ ...user });
+                        setEditMode(!editMode);
+                    }}
+                >
+                    {editMode ? "Discard" : "Edit mode"}
+                </SecondaryButton>
+                {editMode && (
+                    <PrimaryButton className="rounded-md ml-2">Save changes</PrimaryButton>
+                )}
             </div>
         </div>
     );
