@@ -1,12 +1,11 @@
 import { useState, useRef } from "react";
-import Menu from "./menu";
+
 import { BsHouse, BsBookmarks, BsSearch, BsPersonCircle } from "react-icons/bs";
-import { RiMenuFill } from "react-icons/ri";
 export interface IRoute {
     title: string;
     link: string;
 }
-import * as ROUTES from "../../utilities/routes";
+import * as ROUTES from "../utilities/routes";
 import Link from "next/link";
 
 const routes: IRoute[] = [
@@ -23,7 +22,7 @@ const routes: IRoute[] = [
         link: `/${ROUTES.AUTH}`,
     },
 ];
-export const SideBar = () => {
+export const NavigationBar = () => {
     const [openMenu, setOpenMenu] = useState<Boolean>(false);
     const menuContainer = useRef(null);
     return (
@@ -34,7 +33,7 @@ export const SideBar = () => {
                         <BsHouse size={25} />
                     </button>
                 </Link>
-                <Link href={"/me/bookmarks"}>
+                <Link href={"/account/bookmarks"}>
                     <button className="p-2 rounded-full">
                         <BsBookmarks size={25} />
                     </button>
@@ -44,7 +43,7 @@ export const SideBar = () => {
                         <BsSearch size={25} />
                     </button>
                 </Link>
-                <Link href={"/me"}>
+                <Link href={"/account"}>
                     <button className="p-2 rounded-full">
                         <BsPersonCircle size={25} />
                     </button>
@@ -54,4 +53,4 @@ export const SideBar = () => {
     );
 };
 
-export default SideBar;
+export default NavigationBar;
