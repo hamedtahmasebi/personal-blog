@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             props: {},
         };
     }
-    // TODO: Create a utility function for token confirmation
+
     const { sub } = jwt.verify(req.cookies.token, process.env.JWT_SECRET as string);
     if (!sub || typeof sub !== "string") {
         res.statusCode === 401;
