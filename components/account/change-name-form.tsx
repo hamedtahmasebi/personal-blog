@@ -46,55 +46,65 @@ export const ChangeNameForm: React.FC<TProps> = ({ userInitialDetails }) => {
     };
 
     return (
-        <div className="flex flex-col gap-5">
+        <>
             <h4 className="text-black dark:text-white">Account details</h4>
-            <div className="flex items-center gap-4 w-full">
-                <span className="text-base w-full">Email</span>
-                <SimpleInput
-                    placeholder="Email"
-                    type={"text"}
-                    value={userInitialDetails.email}
-                    disabled
-                    className="border rounded-md"
-                />
-            </div>
-            {inputs.map((input, index) => (
-                <div
-                    key={`account-details-input-${index}`}
-                    className="flex items-center gap-4 w-full"
-                >
-                    <span className="text-base w-full">{input.label}</span>
-                    <SimpleInput
-                        placeholder={input.label}
-                        type="text"
-                        value={accountDetails[input.key] ?? ""}
-                        disabled={!editMode}
-                        className="border rounded-md"
-                        onChange={(e) =>
-                            setAccountDetails({
-                                ...accountDetails,
-                                [input.key]: e.target.value,
-                            })
-                        }
-                    />
+            <div className="mt-5">
+                <div className="flex flex-col gap-5">
+                    <div className="flex items-center gap-4 w-full">
+                        <span className="text-base w-full">Email</span>
+                        <SimpleInput
+                            placeholder="Email"
+                            type={"text"}
+                            value={userInitialDetails.email}
+                            disabled
+                            className="border rounded-md"
+                        />
+                    </div>
+                    {inputs.map((input, index) => (
+                        <div
+                            key={`account-details-input-${index}`}
+                            className="flex items-center gap-4 w-full"
+                        >
+                            <span className="text-base w-full">{input.label}</span>
+                            <SimpleInput
+                                placeholder={input.label}
+                                type="text"
+                                value={accountDetails[input.key] ?? ""}
+                                disabled={!editMode}
+                                className="border rounded-md"
+                                onChange={(e) =>
+                                    setAccountDetails({
+                                        ...accountDetails,
+                                        [input.key]: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                    ))}
+
+                    <div className="w-full">
+                        <div className="flex flex-col md:flex-row ml-auto mt-4 gap-2 md:w-fit">
+                            <SecondaryButton
+                                className=" rounded-md"
+                                onClick={(e) => {
+                                    setAccountDetails({ ...userInitialDetails });
+                                    setEditMode(!editMode);
+                                }}
+                            >
+                                {editMode ? "Discard" : "Edit"}
+                            </SecondaryButton>
+                            {editMode && (
+                                <PrimaryButton
+                                    onClick={onSaveChanges}
+                                    className="rounded-md md:ml-2"
+                                >
+                                    Save changes
+                                </PrimaryButton>
+                            )}
+                        </div>
+                    </div>
                 </div>
-            ))}
-            <div className="ml-auto mt-4 w-fit">
-                <SecondaryButton
-                    className=" rounded-md"
-                    onClick={(e) => {
-                        setAccountDetails({ ...userInitialDetails });
-                        setEditMode(!editMode);
-                    }}
-                >
-                    {editMode ? "Discard" : "Edit"}
-                </SecondaryButton>
-                {editMode && (
-                    <PrimaryButton onClick={onSaveChanges} className="rounded-md ml-2">
-                        Save changes
-                    </PrimaryButton>
-                )}
             </div>
-        </div>
+        </>
     );
 };

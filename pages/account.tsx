@@ -55,7 +55,7 @@ export const Account: NextPage<TPageProps> & {
     return (
         <div className="w-full mt-12">
             <ChangeNameForm userInitialDetails={userInitialDetails} />
-            <div className="my-4"></div>
+            <div className="my-8"></div>
             <ChangePasswordForm />
         </div>
     );

@@ -73,7 +73,7 @@ export const ChangePasswordForm = () => {
                         />
                     </div>
 
-                    <div className="ml-auto w-full md:w-1/2 xl:w-1/3 ">
+                    <div className="ml-auto w-full md:w-fit">
                         <PrimaryButton
                             type="submit"
                             disabled={isPending}
