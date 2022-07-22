@@ -4,14 +4,8 @@ import Layout from "../components/Layout";
 import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma";
 import { User } from "@prisma/client";
-import PrimaryButton from "../components/primary-button";
-import SimpleInput from "../components/simple-input";
-import SecondaryButton from "../components/secondary-button";
-import axios from "axios";
-import { CHANGE_ACCOUNT_DETAILS } from "../utilities/apiEndPoints";
-import { baseUrl } from "../utilities/routes";
-import { useRouter } from "next/router";
 import { ChangeNameForm } from "../components/account/change-name-form";
+import ChangePasswordForm from "../components/account/change-password-form";
 type TPageProps = {
     user: Omit<User, "password">;
 };
@@ -61,6 +55,8 @@ export const Account: NextPage<TPageProps> & {
     return (
         <div className="w-full mt-12">
             <ChangeNameForm userInitialDetails={userInitialDetails} />
+            <div className="my-4"></div>
+            <ChangePasswordForm />
         </div>
     );
 };
