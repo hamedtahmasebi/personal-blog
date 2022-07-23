@@ -7,11 +7,11 @@ export const Auth = () => {
     const [formType, setFormType] = React.useState<"login" | "signup">("login");
     return (
         <div className="flex px-6  h-full relative">
-            <div className="fixed -bottom-1 left-0 w-full md:relative md:w-auto md:px-6">
+            <div className="fixed -bottom-1 left-0 w-full md:w-auto md:px-6">
                 <NavigationBar />
             </div>
-            <div className="flex justify-center items-center w-full">
-                <div className="w-full md:w-4/6 lg:w-3/6 xl:w-2/6 md:shadow-lg border md:p-8 rounded-2xl">
+            <div className="flex justify-center items-center w-full mt-8 md:mt-0 md:h-screen">
+                <div className="w-full md:w-4/6 lg:w-3/6 xl:w-2/6 md:shadow-lg md:border md:p-8 rounded-2xl">
                     {formType === "login" && (
                         <>
                             <LoginForm />

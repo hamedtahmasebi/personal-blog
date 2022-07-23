@@ -27,12 +27,16 @@ export const DeleteAccountForm = () => {
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>
                     <form onSubmit={onSubmitDelete}>
-                        <span className="text-black dark:text-white text-base">Password</span>
+                        <p className="text-red-600 text-base">
+                            Please pay attention that all your data will be deleted!
+                        </p>
+                        <span className="text-black dark:text-white text-base mt-3">Password</span>
                         <SimpleInput
                             value={password}
+                            type="password"
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
-                            className="border"
+                            className="border mt-1"
                         />
                         <div className="ml-auto w-full md:w-fit">
                             <DangerButton

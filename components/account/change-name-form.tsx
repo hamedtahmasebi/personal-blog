@@ -49,7 +49,7 @@ export const ChangeNameForm: React.FC<TProps> = ({ userInitialDetails }) => {
         <>
             <h4 className="text-black dark:text-white">Account details</h4>
             <div className="mt-5">
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-4 w-full">
                         <span className="text-base w-full">Email</span>
                         <SimpleInput

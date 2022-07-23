@@ -41,7 +41,7 @@ export const ChangePasswordForm = () => {
         <>
             <h4 className="text-black dark:text-white">Change password</h4>
             <form className="mt-6" onSubmit={onSubmitChangePassword}>
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-4 w-full">
                         <span className="text-base w-full">Current password</span>
                         <SimpleInput

@@ -55,9 +55,17 @@ export const Account: NextPage<TPageProps> & {
 } = ({ user: userInitialDetails }) => {
     return (
         <div className="flex flex-col gap-8 w-full mt-12 mb-24">
-            <ChangeNameForm userInitialDetails={userInitialDetails} />
-            <ChangePasswordForm />
-            <DeleteAccountForm />
+            <div>
+                <ChangeNameForm userInitialDetails={userInitialDetails} />
+            </div>
+
+            <div>
+                <ChangePasswordForm />
+            </div>
+
+            <div>
+                <DeleteAccountForm />
+            </div>
         </div>
     );
 };
