@@ -15,7 +15,7 @@ export const DeleteAccountForm = () => {
         try {
             const res = await axios.post(baseUrl + apiEndPoints.REMOVE_ACCOUNT, { password });
             if (res.status === 200) {
-                return;
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
