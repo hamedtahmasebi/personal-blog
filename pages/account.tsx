@@ -6,6 +6,7 @@ import prisma from "../lib/prisma";
 import { User } from "@prisma/client";
 import { ChangeNameForm } from "../components/account/change-name-form";
 import ChangePasswordForm from "../components/account/change-password-form";
+import DeleteAccountForm from "../components/account/delete-account-form";
 type TPageProps = {
     user: Omit<User, "password">;
 };
@@ -53,10 +54,10 @@ export const Account: NextPage<TPageProps> & {
     getLayout: (page: React.ReactElement) => React.ReactElement;
 } = ({ user: userInitialDetails }) => {
     return (
-        <div className="w-full mt-12">
+        <div className="flex flex-col gap-8 w-full mt-12 mb-24">
             <ChangeNameForm userInitialDetails={userInitialDetails} />
-            <div className="my-8"></div>
             <ChangePasswordForm />
+            <DeleteAccountForm />
         </div>
     );
 };
