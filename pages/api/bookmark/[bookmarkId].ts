@@ -3,8 +3,7 @@ import prisma from "../../../lib/prisma";
 import jwt from "jsonwebtoken";
 const bookmark: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { token } = req.cookies;
-    if (!token)
-        return res.status(401).json({ error: "Token cookie not found", isAuthenticated: false });
+    if (!token) return res.status(401).json({ error: "Login required", isAuthenticated: false });
 
     const verifyObj = jwt.verify(token, process.env.JWT_SECRET as string);
     if (!verifyObj)

@@ -13,9 +13,9 @@ export const Modal: React.FC<TProps> = ({ children, onClose }) => {
                 <div className="flex">
                     <button
                         onClick={() => onClose()}
-                        className="bg-red-500 hover:bg-red-400 transition-all text-white rounded-tr-xl ml-auto"
+                        className="bg-red-600 hover:bg-red-500 transition-all text-white rounded-full ml-auto mr-2 mt-2"
                     >
-                        <BsX size={40} />
+                        <BsX size={30} />
                     </button>
                 </div>
                 <div className="px-8 pt-2 pb-6 w-full">{children}</div>

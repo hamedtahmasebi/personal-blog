@@ -12,8 +12,8 @@ export interface IRoute {
 
 export const NavigationBar = () => {
     const router = useRouter();
-    const signout = () => {
-        axios
+    const signOut = async () => {
+        await axios
             .get("http://localhost:3000/api/signout")
             .then((res) => {
                 if (res.status === 200) {
@@ -67,7 +67,7 @@ export const NavigationBar = () => {
                     </Link>
                 ))}
                 <button
-                    onClick={() => signout()}
+                    onClick={() => signOut()}
                     className="p-3 rounded-full bottom-0 text-red-500 hover:bg-red-100 transition-all hover:scale-125"
                 >
                     <BiLogOut size={25} />
