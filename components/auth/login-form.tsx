@@ -47,7 +47,7 @@ const LoginForm = ({ onSuccessLogin, onFailLogin }: TProps) => {
             if (res.status === 200) {
                 toast.success("Logged In successfully");
                 onSuccessLogin && onSuccessLogin();
-                return;
+                router.push(`/${ROUTES.HOME}`);
             }
         } catch (error) {
             if (error instanceof AxiosError && error.response?.data.error) {
@@ -57,7 +57,6 @@ const LoginForm = ({ onSuccessLogin, onFailLogin }: TProps) => {
             onFailLogin && onFailLogin();
             console.log(error);
         }
-
         setIsPending(false);
     };
 
