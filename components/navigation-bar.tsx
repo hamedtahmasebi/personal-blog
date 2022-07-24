@@ -31,8 +31,6 @@ export const NavigationBar = () => {
         window.location.reload();
     };
 
-    const activeButtonClasses = "bg-gray-100 transition-all scale-125";
-
     const navbarItems = [
         {
             Icon: BsBookmarks,
@@ -58,8 +56,10 @@ export const NavigationBar = () => {
                 {navbarItems.map((item, index) => (
                     <Link key={`nav-item-${index}`} href={item.url}>
                         <button
-                            className={`p-3 rounded-full hover:bg-gray-100 transition-all hover:scale-125 ${
-                                router.pathname === item.url ? activeButtonClasses : ""
+                            className={`p-3 rounded-full  transition-all hover:scale-125 ${
+                                router.pathname === item.url
+                                    ? "bg-primary-50 transition-all scale-125 text-primary-main"
+                                    : "hover:bg-gray-100"
                             }`}
                         >
                             <item.Icon size={25} />

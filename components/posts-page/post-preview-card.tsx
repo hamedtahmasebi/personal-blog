@@ -110,7 +110,7 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                             <a className="">
                                 <h3
                                     className="font-extrabold leading-8 transition-all duration-100 
-                                text-primary-main hover:text-primary-200 
+                                text-primary-main hover:text-primary-500 
                                 dark:text-primaryDark-main dark:hover:text-primaryDark-200"
                                 >
                                     {title}

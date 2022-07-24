@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     return (
         <>
             {getLayout(<Component {...pageProps} />)}
-            <ToastContainer position={"bottom-right"} style={{ width: "fit-content" }} />
+            <ToastContainer className="w-full md:min-w-max" />
         </>
     );
 }
