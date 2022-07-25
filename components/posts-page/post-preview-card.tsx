@@ -84,10 +84,10 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                     </div>
                 </Modal>
             )}
-            <div className="grid grid-cols-6 w-full">
-                <div className="col-span-4">
+            <div className="grid grid-cols-8 w-full">
+                <div className="col-span-6">
                     <div className="flex items-center text-gray-500 dark:text-gray-200">
-                        <div className="relative w-6 h-6 rounded-full">
+                        {/* <div className="relative w-6 h-6 rounded-full">
                             <span className="absolute w-full h-full top-0 rounded-full overflow-hidden">
                                 <Image
                                     src={profileAvatarPlaceholder}
@@ -101,20 +101,20 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
 
                         <a href="#/" className="ml-2 text-sm hover:underline leading-1">
                             Username
-                        </a>
-                        <span className="mx-1">•</span>
+                        </a> */}
+                        {/* <span className="mx-1">•</span> */}
                         <span className="text-sm">{dateString}</span>
                     </div>
-                    <div className="mt-2">
+                    <div className="">
                         <Link href={url}>
                             <a className="">
-                                <h3
-                                    className="font-extrabold leading-8 transition-all duration-100 
-                                text-primary-main hover:text-primary-500 
-                                dark:text-primaryDark-main dark:hover:text-primaryDark-200"
+                                <h4
+                                    className="font-extrabold leading-8 transition-all md:text-2xl duration-100 
+                                    text-primary-main hover:text-primary-500 
+                                    dark:text-primaryDark-main dark:hover:text-primaryDark-200"
                                 >
                                     {title}
-                                </h3>
+                                </h4>
                             </a>
                         </Link>
 
@@ -124,30 +124,32 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                             </p>
                         </Link>
 
-                        {tags && (
-                            <p className="mt-3">
-                                {tags.map(
-                                    (tag: Maybe<ContentfulTag>) =>
-                                        tag &&
-                                        tag.name && (
-                                            <button
-                                                key={tag.name.slice(4)}
-                                                className="text-sm bg-gray-200 text-gray-500 rounded-full px-2
+                        <div className="flex justify-between items-center text-gray-500 dark:text-gray-200 mt-2">
+                            <div className="flex gap-2">
+                                {tags && (
+                                    <p className="my-0 py-0 text-xs">
+                                        {tags.map(
+                                            (tag: Maybe<ContentfulTag>) =>
+                                                tag &&
+                                                tag.name && (
+                                                    <button
+                                                        key={tag.name.slice(4)}
+                                                        className="text-sm bg-gray-200 text-gray-500 rounded-full px-2
                                                 transition-all hover:bg-gray-300 hover:text-gray-600
                                                 dark:bg-gray-500 dark:text-gray-200
                                                 dark:hover:bg-gray-600 dark:hover:text-gray-300
                                                 "
-                                            >
-                                                {tag.name}
-                                            </button>
-                                        )
+                                                    >
+                                                        {tag.name}
+                                                    </button>
+                                                )
+                                        )}
+                                    </p>
                                 )}
-                            </p>
-                        )}
 
-                        <div className="flex justify-between items-center text-gray-500 dark:text-gray-200 mt-4">
-                            <div className="flex">
-                                <span className="text-sm">3 min read</span>
+                                {/* <div className="flex">
+                                    <span className="text-sm">3 min read</span>
+                                </div> */}
                             </div>
                             <div className="flex gap-1 mr-4 relative">
                                 <button
@@ -167,7 +169,7 @@ export const PostPreviewCard: React.FC<IPostPreviewCard> = ({
                         </div>
                     </div>
                 </div>
-                <div className=" relative p-1 col-span-2 ">
+                <div className="relative p-1 col-span-2">
                     <Image
                         src={imgUrl ? imgUrl : placeholderImage}
                         alt="post"
