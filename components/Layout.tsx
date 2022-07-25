@@ -9,10 +9,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         <NavigationBar />
                     </div>
                 </div>
-                <div className="w-full border-l border-r px-4 md:px-12 lg:px-16 xl:px-24">
+                <div className="w-full border-l border-r px-4 md:px-12 lg:px-16 xl:px-24 2xl:px-36">
                     {children}
                 </div>
-                <div className="hidden lg:flex lg:w-4/12 xl:w-3/12">Other things</div>
+                <div className="hidden lg:flex lg:w-4/12 xl:w-5/12">Other things</div>
             </div>
         </>
     );
