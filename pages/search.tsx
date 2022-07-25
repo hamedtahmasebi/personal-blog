@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/Layout";
+import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import axios, { AxiosError } from "axios";
-import { baseUrl } from "../../utilities/routes";
-import { SEARCH } from "../../utilities/apiEndPoints";
-import Spinner from "../../components/spinner";
-import { PostSearchQuery } from "../../generated/graphql";
-import { PostPreviewCard } from "../../components/posts-page/post-preview-card";
-import SearchBar from "../../components/search-bar";
+import { baseUrl } from "../utilities/routes";
+import { SEARCH } from "../utilities/apiEndPoints";
+import Spinner from "../components/spinner";
+import { PostSearchQuery } from "../generated/graphql";
+import { PostPreviewCard } from "../components/posts-page/post-preview-card";
+import SearchBar from "../components/search-bar";
 export const Search = () => {
     const router = useRouter();
     const { query } = router;
