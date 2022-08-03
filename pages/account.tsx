@@ -7,6 +7,7 @@ import { User } from "@prisma/client";
 import { ChangeNameForm } from "../components/account/change-name-form";
 import ChangePasswordForm from "../components/account/change-password-form";
 import DeleteAccountForm from "../components/account/delete-account-form";
+import { DarkModeSwitch } from "../components/dark-mode-switch";
 type TPageProps = {
     user: Omit<User, "password">;
 };
@@ -65,6 +66,11 @@ export const Account: NextPage<TPageProps> & {
 
             <div>
                 <DeleteAccountForm />
+            </div>
+
+            <div className="flex justify-between mt-5">
+                <h3>Dark Mode</h3>
+                <DarkModeSwitch />
             </div>
         </div>
     );

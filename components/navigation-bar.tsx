@@ -52,14 +52,18 @@ export const NavigationBar = () => {
 
     return (
         <>
-            <div className="flex flex-row-reverse items-center md:flex-col md:h-screen w-full z-50 bg-white border-t md:border-0 py-4 justify-around md:justify-center md:gap-16">
+            <div
+                className="flex flex-row-reverse items-center md:flex-col md:h-screen w-full z-50 
+                bg-transparent 
+                border-t md:border-0 py-4 justify-around md:justify-center md:gap-16"
+            >
                 {navbarItems.map((item, index) => (
                     <Link key={`nav-item-${index}`} href={item.url}>
                         <button
                             className={`p-3 rounded-full  transition-all hover:scale-125 ${
                                 router.pathname === item.url
-                                    ? "bg-primary-50 transition-all scale-125 text-primary-main"
-                                    : "hover:bg-gray-100"
+                                    ? "bg-primary-50 dark:bg-primaryDark-100 transition-all scale-125 text-primary-main dark:text-primaryDark-main"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-600"
                             }`}
                         >
                             <item.Icon size={25} />
